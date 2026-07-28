@@ -32,7 +32,7 @@ export function LiveTelemetryFeed() {
           schema: "public",
           table: "ops_network_traces",
         },
-        (payload) => {
+        (payload: any) => {
           setLogs((prev) => [payload.new, ...prev].slice(0, 10));
         },
       )
