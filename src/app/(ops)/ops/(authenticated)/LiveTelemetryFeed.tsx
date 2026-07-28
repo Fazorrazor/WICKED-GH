@@ -11,7 +11,6 @@ export function LiveTelemetryFeed() {
     // Initial fetch of recent network telemetry
     const fetchTelemetry = async () => {
       const { data } = await supabase
-        // @ts-expect-error ops_network_traces is not typed in the schema
         .from("ops_network_traces")
         .select("*")
         .order("timestamp", { ascending: false })
