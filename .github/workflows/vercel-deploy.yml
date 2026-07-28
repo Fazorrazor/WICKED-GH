@@ -29,6 +29,15 @@ jobs:
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         
       - name: Deploy Project Artifacts to Vercel
+        env:
+          VERCEL_GIT_COMMIT_SHA: ""
+          VERCEL_GIT_COMMIT_AUTHOR_NAME: ""
+          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ""
+          VERCEL_GIT_COMMIT_MESSAGE: ""
+          VERCEL_GIT_COMMIT_REF: ""
+          VERCEL_GIT_PROVIDER: ""
+          VERCEL_GIT_REPO_OWNER: ""
+          VERCEL_GIT_REPO_SLUG: ""
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
   Deploy-Preview:
