@@ -7,8 +7,14 @@ export async function updateSession(request: NextRequest) {
     request,
   });
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
+  const isValidUrl = supabaseUrl && /^https?:\/\//i.test(supabaseUrl);
+
+  // If Supabase is not configured, pass through without auth check
+  if (!isValidUrl) {
+    return supabaseResponse;
+  }
 
   const supabase = createServerClient<Database>(supabaseUrl, supabaseKey, {
     cookies: {
