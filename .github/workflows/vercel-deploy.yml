@@ -1,4 +1,4 @@
-name: Vercel Production Deployment
+name: Vercel Deployment
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - master
+      - preview
   pull_request:
     branches:
       - master
@@ -29,20 +30,11 @@ jobs:
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         
       - name: Deploy Project Artifacts to Vercel
-        env:
-          VERCEL_GIT_COMMIT_SHA: ""
-          VERCEL_GIT_COMMIT_AUTHOR_NAME: ""
-          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ""
-          VERCEL_GIT_COMMIT_MESSAGE: ""
-          VERCEL_GIT_COMMIT_REF: ""
-          VERCEL_GIT_PROVIDER: ""
-          VERCEL_GIT_REPO_OWNER: ""
-          VERCEL_GIT_REPO_SLUG: ""
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
   Deploy-Preview:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/preview' || github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
       
