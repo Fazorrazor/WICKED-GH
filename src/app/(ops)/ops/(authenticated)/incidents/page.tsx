@@ -41,6 +41,8 @@ export default function IncidentsPage() {
   const [newDescription, setNewDescription] = useState("");
 
   useEffect(() => {
+    if (!supabase) return;
+
     const fetchIncidents = async () => {
       const { data } = await supabase
         .from("ops_incidents")
@@ -76,10 +78,10 @@ export default function IncidentsPage() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [supabase]);
 
   const handleDeclareIncident = async () => {
-    if (!newTitle) return;
+    if (!newTitle || !supabase) return;
 
     await supabase.from("ops_incidents").insert([
       {

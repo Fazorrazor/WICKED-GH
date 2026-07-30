@@ -55,6 +55,8 @@ export default function NetworkTracesPage() {
 
   // Fetch initial data and subscribe to live changes
   useEffect(() => {
+    if (!supabase) return;
+
     // 1. Fetch the last 50 traces for initial load
     const fetchInitialData = async () => {
       const { data } = await supabase
@@ -91,7 +93,7 @@ export default function NetworkTracesPage() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [supabase]);
 
   return (
     <div className="flex flex-col gap-8 w-full font-mono h-[85vh]">
