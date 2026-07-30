@@ -6,6 +6,11 @@ export const revalidate = 60; // Cache invalidation every 60 seconds
 
 async function CollectionProducts() {
   const supabase = getPublicClient();
+
+  if (!supabase) {
+    return <div>Store is temporarily unavailable. Please try again shortly.</div>;
+  }
+
   const { data, error } = await supabase
     .from("products")
     .select(
