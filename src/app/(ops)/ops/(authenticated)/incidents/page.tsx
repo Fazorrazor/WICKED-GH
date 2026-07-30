@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { createClient } from "@supabase/supabase-js";
 import {
   ShieldAlert,
@@ -12,10 +12,7 @@ import {
   Flame,
 } from "lucide-react";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-);
+// NOTE: Client created inside component to avoid build-time env var baking
 
 type Incident = {
   id: string;
@@ -27,6 +24,15 @@ type Incident = {
 };
 
 export default function IncidentsPage() {
+  const supabase = useMemo(
+    () =>
+      createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      ),
+    [],
+  );
+
   const [isDeclaring, setIsDeclaring] = useState(false);
   const [incidents, setIncidents] = useState<Incident[]>([]);
 
