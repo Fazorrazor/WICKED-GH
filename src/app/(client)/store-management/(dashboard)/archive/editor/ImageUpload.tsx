@@ -33,6 +33,8 @@ export default function ImageUpload({
     const filePath = `${fileName}`;
 
     try {
+      // IMPORTANT: A Supabase Storage bucket named "garments" must exist.
+      // Create it in: Supabase Dashboard → Storage → New Bucket → name: "garments" → Public: true
       const { error: uploadError } = await supabase.storage
         .from("garments")
         .upload(filePath, file);
