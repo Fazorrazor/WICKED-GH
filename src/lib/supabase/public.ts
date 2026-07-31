@@ -9,25 +9,8 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 // We fall back to the server-only variants (SUPABASE_URL / SUPABASE_ANON_KEY)
 // which are always read at runtime and are safe to use in Server Components.
 export function getPublicClient() {
-  const FALLBACK_URL = "https://yfiafaeqvlgmpqcodrin.supabase.co";
-  const FALLBACK_ANON = "sb_publishable_TTg3oxbRVOFSqEpNlNxkMA_MGTsVzlX";
-
-  const supabaseUrl = (
-    process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    process.env.SUPABASE_URL ||
-    FALLBACK_URL
-  )
-    .replace(/["']/g, "")
-    .trim();
-
-  const supabaseKey = (
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-    process.env.SUPABASE_ANON_KEY ||
-    process.env.SUPABASE_PUBLISHABLE_KEY ||
-    FALLBACK_ANON
-  )
-    .replace(/["']/g, "")
-    .trim();
+  const supabaseUrl = "https://yfiafaeqvlgmpqcodrin.supabase.co";
+  const supabaseKey = "sb_publishable_TTg3oxbRVOFSqEpNlNxkMA_MGTsVzlX";
 
   if (!supabaseUrl || !supabaseUrl.startsWith("http")) {
     console.warn("[getPublicClient] No valid Supabase URL found in any env var.");
