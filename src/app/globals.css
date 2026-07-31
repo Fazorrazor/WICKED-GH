@@ -111,3 +111,12 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Hide scrollbar utility (Systemic UX fix for categories/filters) */
+.scrollbar-hide {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none !important;
+}

@@ -16,6 +16,17 @@ export default function CartSidebar() {
     setTimeout(() => setMounted(true), 0);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   if (!mounted) return null;
 
   const total = items.reduce(

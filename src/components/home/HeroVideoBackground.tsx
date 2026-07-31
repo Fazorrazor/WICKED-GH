@@ -22,6 +22,7 @@ export function HeroVideoBackground() {
           alt="Wicked Night Luxe Campaign"
           fill
           priority
+          sizes="100vw"
           className="object-cover object-center opacity-90"
         />
       </motion.div>

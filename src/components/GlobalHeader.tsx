@@ -19,6 +19,7 @@ export default function GlobalHeader() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [isLogoReady, setIsLogoReady] = useState(false);
 
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function GlobalHeader() {
     pathname.startsWith("/collection/") &&
     pathname.length > "/collection/".length;
   const needsDarkTheme = isScrolled || !isHomePage;
-  const hasBackground = isScrolled || isCollectionPage;
+  const hasBackground = isScrolled || isCollectionPage || isPDP;
 
   useEffect(() => {
     const isDev = process.env.NODE_ENV === "development";
@@ -48,10 +49,20 @@ export default function GlobalHeader() {
   }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    
     if (latest > 50) {
       setIsScrolled(true);
     } else {
       setIsScrolled(false);
+    }
+
+    if (previous !== undefined) {
+      if (latest > previous && latest > 150) {
+        setIsHidden(true);
+      } else if (latest < previous) {
+        setIsHidden(false);
+      }
     }
   });
 
@@ -59,8 +70,11 @@ export default function GlobalHeader() {
 
   return (
     <motion.nav
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isLogoReady ? 1 : 0 }}
+      initial={{ opacity: 0, y: 0 }}
+      animate={{ 
+        opacity: isLogoReady ? 1 : 0,
+        y: isHidden ? "-100%" : 0
+      }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed top-0 w-full flex flex-col z-[80] transition-colors duration-300 ${
         hasBackground
@@ -102,7 +116,7 @@ export default function GlobalHeader() {
         {/* Center Logo */}
         <motion.div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center justify-center mt-1">
           <TransitionLink href="/" className="block">
-            <img src="/logo-accent.png" alt="Wicked" className="h-8 md:h-10 w-auto object-contain transition-all duration-300" />
+            <Image src="/logo-accent.png" alt="Wicked" width={160} height={40} priority className="h-8 md:h-10 w-auto object-contain transition-all duration-300" />
           </TransitionLink>
         </motion.div>
 

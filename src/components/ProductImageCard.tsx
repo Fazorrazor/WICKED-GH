@@ -164,14 +164,22 @@ export default function ProductImageCard({
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Prada-style Dot Indicators for Mobile */}
+        {isMobile && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-[5px] z-10">
+            <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${!showWornImage ? "bg-[#121212]" : "bg-transparent border border-[#121212]"}`} />
+            <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${showWornImage ? "bg-[#121212]" : "bg-transparent border border-[#121212]"}`} />
+          </div>
+        )}
       </div>
 
       {/* Typography */}
-      <div className="flex flex-col shrink-0 px-2 py-4 md:px-3 md:py-4 bg-[#FDFDFD]">
-        <h3 className="font-sans font-semibold text-[0.65rem] md:text-[0.7rem] text-black tracking-widest mb-1 line-clamp-1">
+      <div className="flex flex-col shrink-0 px-3 py-4 md:px-4 md:py-5 bg-[#FDFDFD]">
+        <h3 className="font-sans font-semibold text-[0.7rem] md:text-[0.75rem] leading-[1.3] text-black tracking-widest mb-1.5 min-h-[2.6em] line-clamp-2">
           {title}
         </h3>
-        <span className="font-sans font-medium text-[0.6rem] md:text-[0.65rem] text-black/60">
+        <span className="font-sans font-medium text-[0.65rem] md:text-[0.7rem] text-black/60">
           {price}
         </span>
       </div>

@@ -30,6 +30,17 @@ export default function Sidebar() {
     return () => window.removeEventListener("open-sidebar", handleOpenSidebar);
   }, []);
 
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isSidebarOpen]);
+
   return (
     <AnimatePresence>
       {isSidebarOpen && (

@@ -117,9 +117,9 @@ export default function ProductDetailClient({
   // Images array is now defined above to be used in paginate
 
   return (
-    <main className="relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen flex flex-col md:flex-row">
+    <main className="relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen pt-[55px] md:pt-[70px] flex flex-col md:flex-row">
       {/* LEFT: Shuffling Image Gallery */}
-      <div className="w-full md:w-[55%] aspect-[4/5] md:aspect-auto md:h-screen flex flex-col pt-20 md:pt-0 bg-[#0e0e0e] relative group overflow-hidden shrink-0 border-r border-[#781625]/20">
+      <div className="w-full md:w-[55%] aspect-[4/5] md:aspect-auto md:h-[calc(100vh-70px)] flex flex-col bg-[#0e0e0e] relative group overflow-hidden shrink-0 border-r border-[#781625]/20">
         {/* Navigation Arrows */}
         <button
           onClick={() => paginate(-1)}
@@ -147,13 +147,26 @@ export default function ProductDetailClient({
               ease: [0.16, 1, 0.3, 1], // Classic hyper-smooth easing
               delay: 0.05,
             }}
-            className="absolute inset-0 w-full h-full pointer-events-none"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = Math.abs(offset.x) * velocity.x;
+
+              if (swipe < -10000) {
+                paginate(1);
+              } else if (swipe > 10000) {
+                paginate(-1);
+              }
+            }}
+            className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
           >
             <Image
               src={images[activeImageIndex]}
               alt={`${product.title} view ${activeImageIndex + 1}`}
               fill
               priority
+              sizes="(max-width: 768px) 100vw, 55vw"
               className="object-cover object-center"
             />
           </motion.div>
@@ -172,7 +185,7 @@ export default function ProductDetailClient({
 
       {/* RIGHT: Sticky Product Details */}
       <div className="w-full md:w-[45%] relative bg-[#FDFDFD]">
-        <div className="md:sticky md:top-0 w-full h-screen overflow-y-auto flex flex-col px-6 py-12 md:px-12 lg:px-20 pb-32 md:pb-0">
+        <div className="md:sticky md:top-[70px] w-full md:h-[calc(100vh-70px)] overflow-y-auto flex flex-col px-6 py-12 md:px-12 lg:px-20 pb-32 md:pb-0">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -207,6 +220,7 @@ export default function ProductDetailClient({
                           src={selectedVariation.image}
                           alt={selectedVariation.name}
                           fill
+                          sizes="48px"
                           className="object-cover opacity-80"
                         />
                       )}

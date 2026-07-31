@@ -75,13 +75,14 @@ export default function Home() {
                   src={item.img}
                   alt={item.title}
                   fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-[1200ms] ease-out"
                 />
               </TransitionLink>
               
               {/* Product Info Block (Solid, no messy gradients) */}
               <div className="absolute bottom-0 left-0 w-full p-4 md:p-6 bg-[#0a0a0a]/80 backdrop-blur-md border-t border-white/5">
-                <span className="font-sans text-[13px] md:text-[14px] font-bold text-white block">
+                <span className="font-sans text-[13px] md:text-[14px] leading-[1.2] font-bold text-white block min-h-[2.4em] line-clamp-2">
                   {item.title}
                 </span>
                 <span className="font-sans text-[11px] md:text-[12px] text-[#781625] uppercase tracking-wider font-semibold mt-1 block">
@@ -100,6 +101,7 @@ export default function Home() {
             src="/garments/hero-cinematic.png"
             alt="Campaign"
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover object-center opacity-80"
           />
         </div>
@@ -123,7 +125,7 @@ export default function Home() {
         <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
           
           <div className="flex flex-col gap-6 w-full md:w-1/3">
-            <img src="/logo-accent.png" alt="Wicked" className="h-8 md:h-10 w-auto object-contain object-left opacity-90" />
+            <Image src="/logo-accent.png" alt="Wicked" width={160} height={40} className="h-8 md:h-10 w-auto object-contain object-left opacity-90" />
             <p className="font-sans text-[13px] md:text-[14px] text-white/50 leading-relaxed max-w-sm">
               Premium tailoring and uncompromising design. Born in Accra, worn globally.
             </p>
