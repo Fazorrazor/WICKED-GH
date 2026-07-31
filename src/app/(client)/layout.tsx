@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { Montserrat, Bodoni_Moda } from "next/font/google";
+import { Inter, Bodoni_Moda } from "next/font/google";
 import "@/app/globals.css";
 import ScrollRestoration from "@/components/ScrollRestoration";
 import { TransitionProvider } from "@/components/TransitionProvider";
@@ -10,7 +10,7 @@ import GlobalHeader from "@/components/GlobalHeader";
 import Sidebar from "@/components/Sidebar";
 import { Toaster } from "sonner";
 
-const sansFont = Montserrat({
+const sansFont = Inter({
   variable: "--font-inter", // keeping variable name for css compatibility
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],

@@ -109,7 +109,7 @@ export default function GlobalLoader() {
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="relative z-10 flex flex-col items-center"
               >
-                <img src="/logo-white.png" alt="Wicked" className="h-16 md:h-20 w-auto object-contain opacity-90" />
+                <img src="/logo-accent.png" alt="Wicked" className="h-16 md:h-20 w-auto object-contain opacity-90" />
                 
                 {/* Cinematic loading accent line */}
                 <motion.div 

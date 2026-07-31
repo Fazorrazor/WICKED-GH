@@ -95,12 +95,12 @@ export default function ProductImageCard({
   return (
     <div
       ref={containerRef}
-      className={`flex flex-col group cursor-pointer h-full bg-[#EBEBEB] ${className}`}
+      className={`flex flex-col group cursor-pointer h-full bg-[#FDFDFD] ${className}`}
       onMouseEnter={() => !isMobile && setIsHovered(true)}
       onMouseLeave={() => !isMobile && setIsHovered(false)}
     >
       {/* Image Container with Static Background */}
-      <div className={`relative w-full overflow-hidden ${aspectClass} max-h-[55vh]`}>
+      <div className={`relative w-full overflow-hidden bg-[#F0F0F0] ${aspectClass}`}>
         <AnimatePresence initial={false}>
           {showWornImage ? (
             <motion.div
@@ -167,11 +167,11 @@ export default function ProductImageCard({
       </div>
 
       {/* Typography */}
-      <div className="flex flex-col shrink-0 px-3 py-4 md:px-5 md:py-6 bg-[#EBEBEB]">
-        <h3 className="font-sans font-semibold text-[0.65rem] md:text-[0.75rem] text-black uppercase tracking-widest mb-1 line-clamp-1">
+      <div className="flex flex-col shrink-0 px-2 py-4 md:px-3 md:py-4 bg-[#FDFDFD]">
+        <h3 className="font-sans font-semibold text-[0.65rem] md:text-[0.7rem] text-black tracking-widest mb-1 line-clamp-1">
           {title}
         </h3>
-        <span className="font-sans font-medium text-[0.6rem] md:text-xs text-black/50">
+        <span className="font-sans font-medium text-[0.6rem] md:text-[0.65rem] text-black/60">
           {price}
         </span>
       </div>

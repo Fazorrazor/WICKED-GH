@@ -75,10 +75,28 @@ export default function ProductDetailClient({
 
   const { addItem } = useCartStore();
 
+  const extraImages: Record<string, string[]> = {
+    "6ff4e61f-427b-4d72-8060-5f1ff7f12b22": ["/garments/burgundy_detail.png"],
+    "8f7e0606-bd47-4287-980f-944e1be0be8b": ["/garments/black_detail.png"],
+    "d2f8c163-d14d-4245-a633-89de64f4189a": ["/garments/turquoise_detail.png"],
+    "e80dfa33-8daa-4841-a78b-2ee84f9498ea": ["/garments/velvet_detail.png"],
+    "a1b0764d-b8e4-42cc-b7f6-f3fb5afcfc26": ["/garments/emerald_detail.png"],
+    "7274b7f3-d4a2-4a53-b41f-68c1063a8a52": ["/garments/crystal_detail.png"],
+    "8a1c641f-2ca1-4aef-a295-bb3c1d0ac809": ["/garments/jumpsuit_detail.png"],
+    "3b1093b1-ad44-45c7-8029-a2497bb3e1fd": ["/garments/ruby_detail.png"],
+    "efa8798d-c222-4b45-bed2-48b1d9724d96": ["/garments/onyx_detail.png"],
+  };
+
+  const images = [
+    product.image_worn_url || "/garments/placeholder_product_1.png",
+    ...(extraImages[product.id] || []),
+    product.image_solo_url || "/garments/placeholder_product_1.png",
+  ];
+
   const paginate = (newDirection: number) => {
     setDirection(newDirection);
     setActiveImageIndex(
-      (prev) => (prev + newDirection + 2) % 2, // We have 2 images: worn and solo
+      (prev) => (prev + newDirection + images.length) % images.length,
     );
   };
 
@@ -96,10 +114,7 @@ export default function ProductDetailClient({
     }),
   };
 
-  const images = [
-    product.image_worn_url || "/garments/placeholder_product_1.png",
-    product.image_solo_url || "/garments/placeholder_product_1.png",
-  ];
+  // Images array is now defined above to be used in paginate
 
   return (
     <main className="relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen flex flex-col md:flex-row">

@@ -17,65 +17,7 @@ export type ClientProduct = {
   categories?: any;
 };
 
-const getBentoLayout = (
-  index: number,
-  totalItems: number,
-  isViewAll: boolean,
-) => {
-  let gridClass = "col-span-1 md:col-span-1 row-span-1";
-  let aspectClass = "aspect-[4/5]";
-
-  if (isViewAll) {
-    const maxCompleteBlocks = Math.floor(totalItems / 5);
-    const blockIndex = Math.floor(index / 5);
-    const indexInBlock = index % 5;
-
-    if (blockIndex < maxCompleteBlocks) {
-      const isLeftBlock = blockIndex % 2 === 0;
-      if (isLeftBlock && indexInBlock === 0) {
-        gridClass = "col-span-2 row-span-1 md:col-span-2 md:row-span-2";
-        aspectClass = "aspect-[16/9] md:aspect-auto md:flex-1";
-      } else if (!isLeftBlock && indexInBlock === 2) {
-        gridClass =
-          "col-span-2 row-span-1 md:col-span-2 md:row-span-2 md:col-start-3";
-        aspectClass = "aspect-[16/9] md:aspect-auto md:flex-1";
-      }
-    } else {
-      const remItems = totalItems - maxCompleteBlocks * 5;
-      if (totalItems % 2 !== 0 && index === totalItems - 1) {
-        gridClass = gridClass.replace("col-span-1", "col-span-2");
-      }
-      if (remItems === 1 && index === totalItems - 1) {
-        gridClass = gridClass.replace("md:col-span-1", "md:col-span-4");
-      } else if (remItems === 2 && index >= totalItems - 2) {
-        gridClass = gridClass.replace("md:col-span-1", "md:col-span-2");
-      } else if (remItems === 3 && index === totalItems - 1) {
-        gridClass = gridClass.replace("md:col-span-1", "md:col-span-2");
-      }
-    }
-  } else {
-    // Standard logic for category views
-    const remMobile = totalItems % 2;
-    if (remMobile === 1 && index === totalItems - 1) {
-      gridClass = gridClass.replace("col-span-1", "col-span-2");
-    }
-
-    const remDesktop = totalItems % 4;
-    if (remDesktop === 1 && index === totalItems - 1) {
-      // Cap at col-span-2 — never stretch a lone card full-width
-      gridClass = gridClass.replace("md:col-span-1", "md:col-span-2");
-    } else if (remDesktop === 2 && index >= totalItems - 2) {
-      gridClass = gridClass.replace("md:col-span-1", "md:col-span-2");
-    } else if (remDesktop === 3 && index === totalItems - 1) {
-      gridClass = gridClass.replace("md:col-span-1", "md:col-span-2");
-    }
-  }
-
-  return {
-    gridClass: `${gridClass} border-r border-b border-black/5`,
-    aspectClass,
-  };
-};
+// Simple grid structure instead of bento layout
 
 export default function CollectionShowroomClient({
   initialProducts,
@@ -92,6 +34,8 @@ export default function CollectionShowroomClient({
     const cat = params.get("category");
     if (cat) {
       setTimeout(() => setActiveCategory(cat), 0);
+    } else {
+      setTimeout(() => setActiveCategory("View All"), 0);
     }
   }, [setActiveCategory]);
 
@@ -120,43 +64,64 @@ export default function CollectionShowroomClient({
 
   return (
     <main className="relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen pt-[55px] md:pt-[70px] flex flex-col">
-      {/* PREMIUM STICKY CATEGORY NAV */}
-      <div className="w-full sticky top-[55px] md:top-[70px] z-[70] bg-[#FDFDFD] border-b border-black/10 px-5 md:px-12 py-4 flex flex-col md:flex-row justify-between items-center gap-4 transition-all duration-300">
-         <div className="flex w-full md:w-auto overflow-x-auto scrollbar-hide gap-8 items-center px-2">
-            {["View All", "Outerwear", "Jackets", "Shirts", "Knitwear", "Pants", "Accessories"].map(cat => (
+      {/* PREMIUM CATEGORY NAV & UTILITY BAR */}
+      <div className="w-full sticky top-[55px] md:top-[70px] z-[70] bg-[#FDFDFD] flex flex-col transition-all duration-300">
+        
+        {/* Top: Category List */}
+        <div className="w-full border-b border-black/10 px-5 md:px-12 pt-3 flex overflow-x-auto overflow-y-hidden scrollbar-hide gap-6 md:gap-8 items-center">
+          <span className="shrink-0 font-sans text-[12px] md:text-[13px] font-bold text-[#121212] mr-2 pb-3">Ready to wear</span>
+          {["View all", "Evening gowns", "Mini dresses", "Two-piece sets", "Jumpsuits", "Corsets & tops", "Accessories"].map(cat => {
+             const normalizedCat = cat.toLowerCase() === "view all" ? "View All" : 
+                                   cat.toLowerCase() === "evening gowns" ? "Evening Gowns" :
+                                   cat.toLowerCase() === "mini dresses" ? "Mini Dresses" :
+                                   cat.toLowerCase() === "two-piece sets" ? "Two-Piece Sets" :
+                                   cat.toLowerCase() === "jumpsuits" ? "Jumpsuits" :
+                                   cat.toLowerCase() === "corsets & tops" ? "Corsets & Tops" : "Accessories";
+                                   
+             const isActive = activeCategory === normalizedCat || (!activeCategory && normalizedCat === "View All");
+             
+             return (
                <button
                   key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`shrink-0 font-sans text-[9px] md:text-[10px] font-semibold tracking-[0.3em] uppercase transition-colors pb-1 ${
-                     activeCategory === cat || (!activeCategory && cat === "View All")
-                     ? "text-[#121212] border-b border-[#781625]"
-                     : "text-[#121212]/40 hover:text-[#121212]"
+                  onClick={() => setActiveCategory(normalizedCat)}
+                  className={`shrink-0 font-sans text-[12px] md:text-[13px] transition-all pb-3 border-b-2 -mb-[1px] ${
+                     isActive
+                     ? "text-[#121212] font-bold border-[#121212]"
+                     : "text-[#121212]/60 font-medium border-transparent hover:text-[#121212]"
                   }`}
                >
                   {cat}
                </button>
-            ))}
-         </div>
-         
-         <div className="flex items-center justify-end w-full md:w-auto shrink-0 mt-2 md:mt-0 px-2 md:px-0">
-            <span className="font-sans text-[9px] tracking-[0.3em] uppercase text-[#121212]/30">{filteredProducts.length} Pieces</span>
-         </div>
+             );
+          })}
+        </div>
+        
+        {/* Bottom: Utility / Filter Bar */}
+        <div className="w-full border-b border-black/10 px-5 md:px-12 py-2.5 flex justify-between items-center bg-[#FDFDFD]">
+          {/* Left: Product Count */}
+          <span className="font-sans text-[11px] md:text-[12px] text-[#121212]/60 font-medium uppercase">
+            {filteredProducts.length} PRODUCTS
+          </span>
+          
+          {/* Right: Filters & Sort */}
+          <div className="flex items-center gap-2">
+            <button className="font-sans text-[11px] md:text-[12px] text-[#121212] font-bold hover:opacity-70 transition-opacity uppercase">
+              FILTERS
+            </button>
+            <span className="font-sans text-[11px] md:text-[12px] text-[#121212] mx-1 font-bold">·</span>
+            <button className="font-sans text-[11px] md:text-[12px] text-[#121212] font-bold hover:opacity-70 transition-opacity flex items-center gap-1 uppercase">
+              SORT BY: SUGGESTED
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* THE SHOWROOM GRID */}
-      <section className="w-full pb-24 mt-4">
-        {/* Editorial Bento Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 px-0 bg-[#FDFDFD]">
+      <section className="w-full pb-24 mt-0">
+        {/* Simple 4-column Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-[1px] bg-black/10">
           {filteredProducts.map((item, index) => {
-            const isViewAll =
-              !activeCategory ||
-              activeCategory === "All" ||
-              activeCategory === "View All";
-            const { gridClass, aspectClass } = getBentoLayout(
-              index,
-              filteredProducts.length,
-              isViewAll,
-            );
             return (
               <motion.div
                 key={item.id}
@@ -175,7 +140,7 @@ export default function CollectionShowroomClient({
                     },
                   },
                 }}
-                className={`w-full h-full flex flex-col ${gridClass}`}
+                className="w-full flex flex-col h-[calc(100vh-140px)] md:h-[calc(100vh-158px)]"
               >
                 <TransitionLink
                   href={`/collection/${item.id}`}
@@ -188,14 +153,21 @@ export default function CollectionShowroomClient({
                     imageWornUrl={item.image_worn_url}
                     startWithWorn={false}
                     index={index}
-                    priority={index < 2}
-                    aspectClass={aspectClass}
+                    priority={index < 4}
+                    aspectClass="flex-1"
                     className="flex-1"
                   />
                 </TransitionLink>
               </motion.div>
             );
           })}
+        </div>
+        
+        {/* Optional Load More */}
+        <div className="w-full flex justify-center mt-16 md:mt-24">
+           <button className="font-sans text-[0.65rem] tracking-[0.2em] font-semibold uppercase border-b border-black/30 pb-1 text-[#121212] hover:border-black transition-colors">
+              Load More
+           </button>
         </div>
       </section>
 

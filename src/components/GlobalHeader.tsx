@@ -64,7 +64,7 @@ export default function GlobalHeader() {
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed top-0 w-full flex flex-col z-[80] transition-colors duration-300 ${
         hasBackground
-          ? "bg-[#781625] border-b-0"
+          ? "bg-[#FDFDFD] border-b border-black/10"
           : "bg-transparent"
       }`}
     >
@@ -74,14 +74,14 @@ export default function GlobalHeader() {
         {isCheckoutPage ? (
           <TransitionLink
             href="/collection"
-            className={`font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity p-2 -ml-2 pointer-events-auto text-white`}
+            className={`font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity p-2 -ml-2 pointer-events-auto ${hasBackground ? 'text-[#121212]' : 'text-white'}`}
           >
             [ Back ]
           </TransitionLink>
         ) : isPDP ? (
           <TransitionLink
             href="/collection"
-            className={`font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity p-2 -ml-2 pointer-events-auto text-white`}
+            className={`font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity p-2 -ml-2 pointer-events-auto ${hasBackground ? 'text-[#121212]' : 'text-white'}`}
           >
             [ Back ]
           </TransitionLink>
@@ -91,10 +91,10 @@ export default function GlobalHeader() {
             className="flex flex-col gap-[6px] group p-2 -ml-2 pointer-events-auto"
           >
             <span
-              className={`w-6 h-[1px] transition-colors duration-300 group-hover:w-4 ${hasBackground ? 'bg-white' : (needsDarkTheme ? 'bg-[#121212]' : 'bg-white')}`}
+              className={`w-6 h-[1px] transition-colors duration-300 group-hover:w-4 ${hasBackground ? 'bg-[#121212]' : (needsDarkTheme ? 'bg-[#121212]' : 'bg-white')}`}
             ></span>
             <span
-              className={`w-6 h-[1px] transition-colors duration-300 group-hover:w-3 ${hasBackground ? 'bg-white' : (needsDarkTheme ? 'bg-[#121212]' : 'bg-white')}`}
+              className={`w-6 h-[1px] transition-colors duration-300 group-hover:w-3 ${hasBackground ? 'bg-[#121212]' : (needsDarkTheme ? 'bg-[#121212]' : 'bg-white')}`}
             ></span>
           </button>
         )}
@@ -102,7 +102,7 @@ export default function GlobalHeader() {
         {/* Center Logo */}
         <motion.div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center justify-center mt-1">
           <TransitionLink href="/" className="block">
-            <img src={hasBackground ? "/logo-white.png" : "/logo-accent.png"} alt="Wicked" className="h-8 md:h-10 w-auto object-contain transition-all duration-300" />
+            <img src="/logo-accent.png" alt="Wicked" className="h-8 md:h-10 w-auto object-contain transition-all duration-300" />
           </TransitionLink>
         </motion.div>
 
@@ -113,7 +113,7 @@ export default function GlobalHeader() {
               {/* Desktop Left Action */}
               {isPDP ? (
                 <button
-                  className={`hidden md:block font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity ${hasBackground ? 'text-white' : (needsDarkTheme ? 'text-[#121212]' : 'text-white')}`}
+                  className={`hidden md:block font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity ${hasBackground ? 'text-[#121212]' : (needsDarkTheme ? 'text-[#121212]' : 'text-white')}`}
                 >
                   Share
                 </button>
@@ -122,7 +122,7 @@ export default function GlobalHeader() {
               {/* Unified Bag Button (Visible Everywhere except Checkout) */}
               <button
                 onClick={openCart}
-                className={`hover:opacity-70 transition-opacity flex items-center gap-1.5 ${hasBackground ? 'text-white' : (needsDarkTheme ? 'text-[#121212]' : 'text-white')}`}
+                className={`hover:opacity-70 transition-opacity flex items-center gap-1.5 ${hasBackground ? 'text-[#121212]' : (needsDarkTheme ? 'text-[#121212]' : 'text-white')}`}
                 aria-label="Open Bag"
               >
                 <svg
