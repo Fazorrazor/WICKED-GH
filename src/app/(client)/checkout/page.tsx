@@ -25,59 +25,75 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmitting) return;
     setIsSubmitting(true);
 
-    const formData = new FormData(e.currentTarget);
-    const digitalAddress = formData.get("digitalAddress") as string;
-    const streetAddress = formData.get("address") as string;
-    const combinedAddress = `${digitalAddress} - ${streetAddress}`;
+    try {
+      const formData = new FormData(e.currentTarget);
+      const digitalAddress = formData.get("digitalAddress") as string;
+      const streetAddress = formData.get("address") as string;
+      const combinedAddress = `${digitalAddress} - ${streetAddress}`;
 
-    const firstName = formData.get("firstName") as string;
-    const lastName = formData.get("lastName") as string;
-    const email = formData.get("email") as string;
-    const phone = formData.get("phone") as string;
-    const region = formData.get("region") as string;
-    const city = formData.get("city") as string;
+      const firstName = formData.get("firstName") as string;
+      const lastName = formData.get("lastName") as string;
+      const email = formData.get("email") as string;
+      const phone = formData.get("phone") as string;
+      const region = formData.get("region") as string;
+      const city = formData.get("city") as string;
 
-    // 1. Get current session to link to profile if logged in
-    const { data: { session } } = await supabase.auth.getSession();
-    const clientId = session?.user?.id || null;
+      // 1. Get current session to link to profile if logged in
+      let clientId = null;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        clientId = session?.user?.id || null;
+      } catch (sessionErr) {
+        console.warn("Could not retrieve session:", sessionErr);
+      }
 
-    const fullShippingAddress = [
-      `${firstName} ${lastName}`,
-      phone,
-      combinedAddress,
-      `${city}, ${region}`,
-      formData.get("notes") ? `Notes: ${formData.get("notes")}` : ""
-    ].filter(Boolean).join("\n");
+      const fullShippingAddress = [
+        `${firstName} ${lastName}`,
+        phone,
+        combinedAddress,
+        `${city}, ${region}`,
+        formData.get("notes") ? `Notes: ${formData.get("notes")}` : ""
+      ].filter(Boolean).join("\n");
 
-    if (clientId) {
-      // Opportunistically update their profile with the latest shipping address
-      await supabase.from("profiles").update({
-        first_name: firstName,
-        last_name: lastName,
-        shipping_address: fullShippingAddress
-      }).eq("id", clientId);
-    }
+      if (clientId) {
+        // Opportunistically update their profile with the latest shipping address
+        supabase.from("profiles").update({
+          first_name: firstName,
+          last_name: lastName,
+          shipping_address: fullShippingAddress
+        }).eq("id", clientId).then(() => {}).catch(() => {});
+      }
 
-    // 2. Insert Order and Items via secure RPC (bypasses RLS read issues)
-    const orderId = crypto.randomUUID();
-    const { error } = await supabase.rpc("submit_inquiry", {
-      p_id: orderId,
-      p_client_id: clientId,
-      p_email: email,
-      p_shipping_address: fullShippingAddress,
-      p_total_cents: total,
-      p_items: items.map(item => ({
-        product_id: item.productId,
-        price_cents: item.price_cents,
-        quantity: item.quantity
-      }))
-    } as any);
+      // 2. Insert Order and Items via secure RPC (bypasses RLS read issues)
+      // Fallback for older browsers just in case
+      const orderId = typeof crypto.randomUUID === 'function' 
+        ? crypto.randomUUID() 
+        : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-    if (!error) {
-      // 3. Send Email Confirmation
-      await fetch("/api/send-confirmation", {
+      const { error } = await supabase.rpc("submit_inquiry", {
+        p_id: orderId,
+        p_client_id: clientId,
+        p_email: email,
+        p_shipping_address: fullShippingAddress,
+        p_total_cents: total,
+        p_items: items.map(item => ({
+          product_id: item.productId,
+          price_cents: item.price_cents,
+          quantity: item.quantity
+        }))
+      } as any);
+
+      if (error) {
+        console.error("Error submitting inquiry:", error);
+        alert("There was an error submitting your request. Please try again.");
+        return;
+      }
+
+      // 3. Send Email Confirmation (Fire and Forget to prevent blocking)
+      fetch("/api/send-confirmation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -87,18 +103,15 @@ export default function CheckoutPage() {
           totalCents: total
         })
       }).catch(err => console.error("Failed to trigger email confirmation:", err));
+
+      setIsSuccess(true);
+      clearCart();
+    } catch (err) {
+      console.error("Unexpected error during submission:", err);
+      alert("An unexpected error occurred while processing your request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
-
-    if (error) {
-      console.error("Error submitting inquiry:", error);
-      alert("There was an error submitting your request. Please try again.");
-      return;
-    }
-
-    setIsSuccess(true);
-    clearCart();
   };
 
   if (!mounted) return null;
