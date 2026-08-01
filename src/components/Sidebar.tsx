@@ -57,12 +57,12 @@ export default function Sidebar() {
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
-            className="main-sidebar fixed top-0 left-0 w-full md:w-[400px] h-full bg-[#FAFAFA] border-r border-black/10 text-[#121212] z-[120] flex flex-col overflow-y-auto shadow-2xl"
+            className="main-sidebar fixed top-0 left-0 w-full md:w-[400px] h-full bg-[#0a0a0a] border-r border-white/10 text-white z-[120] flex flex-col overflow-y-auto shadow-2xl"
           >
             <div className="main-sidebar__container w-full h-full flex flex-col px-8 md:px-12 py-12 md:py-20 relative">
               <button
                 onClick={() => setIsSidebarOpen(false)}
-                className="absolute top-8 right-8 md:top-10 md:right-10 text-[0.65rem] font-sans font-bold tracking-[0.2em] uppercase text-[#121212] hover:text-[#781625] transition-colors z-10"
+                className="absolute top-8 right-8 md:top-10 md:right-10 text-[0.65rem] font-sans font-bold tracking-[0.2em] uppercase text-white/60 hover:text-white transition-colors z-10"
               >
                 [ Close ]
               </button>
@@ -79,24 +79,23 @@ export default function Sidebar() {
                     <TransitionLink
                       onClick={() => setIsSidebarOpen(false)}
                       href="/collection"
-                      className="font-display font-light text-3xl uppercase tracking-widest text-[#121212] hover:text-[#781625] transition-colors block"
+                      className="font-display font-light text-3xl uppercase tracking-widest text-white hover:text-[#781625] transition-colors block"
                     >
                       Shop
                     </TransitionLink>
                     <div className="flex flex-col gap-4 mt-6">
                       {[
-                        "Outerwear",
-                        "Jackets",
-                        "Shirts",
-                        "Knitwear",
-                        "Pants",
+                        "Evening Gowns",
+                        "Mini Dresses",
+                        "Two-Piece Sets",
+                        "Corsets & Tops",
                         "Accessories",
                       ].map((cat) => (
                         <TransitionLink
                           key={cat}
                           onClick={() => setIsSidebarOpen(false)}
                           href={`/collection?category=${cat}`}
-                          className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#121212]/50 hover:text-[#121212] transition-colors"
+                          className="font-sans text-[10px] tracking-[0.3em] uppercase text-white/50 hover:text-white transition-colors"
                         >
                           {cat}
                         </TransitionLink>
@@ -109,16 +108,16 @@ export default function Sidebar() {
                     <TransitionLink
                       onClick={() => setIsSidebarOpen(false)}
                       href="/store-management"
-                      className="font-display font-light text-3xl uppercase tracking-widest text-[#121212] hover:text-[#781625] transition-colors block"
+                      className="font-display font-light text-3xl uppercase tracking-widest text-white hover:text-[#781625] transition-colors block"
                     >
                       Store Login
                     </TransitionLink>
                   </motion.div>
                   
                   {/* Tertiary Links */}
-                  <motion.div variants={fadeUpVariant} className="pt-8 mt-2 border-t border-black/10 flex flex-col gap-4">
-                    <TransitionLink onClick={() => setIsSidebarOpen(false)} href="/about" className="font-sans text-xs tracking-[0.2em] uppercase text-[#121212]/60 hover:text-[#121212] transition-colors">About Us</TransitionLink>
-                    <TransitionLink onClick={() => setIsSidebarOpen(false)} href="#" className="font-sans text-xs tracking-[0.2em] uppercase text-[#121212]/60 hover:text-[#121212] transition-colors">Customer Service</TransitionLink>
+                  <motion.div variants={fadeUpVariant} className="pt-8 mt-2 border-t border-white/10 flex flex-col gap-4">
+                    <TransitionLink onClick={() => setIsSidebarOpen(false)} href="/about" className="font-sans text-xs tracking-[0.2em] uppercase text-white/60 hover:text-white transition-colors">About Us</TransitionLink>
+                    <TransitionLink onClick={() => setIsSidebarOpen(false)} href="#" className="font-sans text-xs tracking-[0.2em] uppercase text-white/60 hover:text-white transition-colors">Customer Service</TransitionLink>
                   </motion.div>
                 </motion.div>
               </div>
