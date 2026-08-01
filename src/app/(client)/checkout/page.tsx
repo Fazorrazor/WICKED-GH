@@ -29,6 +29,10 @@ export default function CheckoutPage() {
     setIsSubmitting(true);
 
     try {
+      if (!supabase) {
+        throw new Error("Database connection not initialized. Please check your environment variables.");
+      }
+
       const formData = new FormData(e.currentTarget);
       const digitalAddress = formData.get("digitalAddress") as string;
       const streetAddress = formData.get("address") as string;
@@ -68,9 +72,9 @@ export default function CheckoutPage() {
       }
 
       // 2. Insert Order and Items via secure RPC (bypasses RLS read issues)
-      // Fallback for older browsers just in case
-      const orderId = typeof crypto.randomUUID === 'function' 
-        ? crypto.randomUUID() 
+      // Fallback for older browsers just in case, safely checking globalThis
+      const orderId = (typeof globalThis !== 'undefined' && globalThis.crypto && typeof globalThis.crypto.randomUUID === 'function')
+        ? globalThis.crypto.randomUUID() 
         : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
       const { error } = await supabase.rpc("submit_inquiry", {
