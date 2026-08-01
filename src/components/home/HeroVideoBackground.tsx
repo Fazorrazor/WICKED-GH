@@ -6,24 +6,25 @@ import { motion } from "framer-motion";
 export function HeroVideoBackground() {
   return (
     <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-[#050505]">
+      {/* 
+        We use a slow scale animation on the wrapper if desired, 
+        but video naturally has motion. Let's just apply a subtle fade-in.
+      */}
       <motion.div
-        initial={{ scale: 1 }}
-        animate={{ scale: 1.15 }}
-        transition={{
-          duration: 30,
-          ease: "linear",
-          repeat: Infinity,
-          repeatType: "reverse",
-        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
         className="absolute inset-0 w-full h-full"
       >
-        <Image
-          src="/garments/hero_night_luxe.png"
-          alt="Wicked Night Luxe Campaign"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-90"
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="object-cover object-center w-full h-full opacity-80"
+          // Provide your local video path here, e.g., src="/videos/hero-campaign.mp4"
+          // For now using a placeholder or assuming the user provides one in public folder:
+          src="/hero.mp4"
         />
       </motion.div>
     </div>
