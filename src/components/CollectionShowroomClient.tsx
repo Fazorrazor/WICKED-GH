@@ -168,7 +168,7 @@ export default function CollectionShowroomClient({
                 >
                   <ProductImageCard
                     title={item.title}
-                    price={"$" + (item.price_cents / 100).toFixed(2)}
+                    price={"GH₵" + (item.price_cents / 100).toFixed(2)}
                     imageSoloUrl={item.image_solo_url}
                     imageWornUrl={item.image_worn_url}
                     startWithWorn={false}

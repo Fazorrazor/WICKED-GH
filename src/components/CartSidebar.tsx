@@ -98,7 +98,7 @@ export default function CartSidebar() {
                           {item.title}
                         </h3>
                         <span className="font-sans text-xs tracking-wider">
-                          ${(item.price_cents / 100).toFixed(2)}
+                          GH₵{(item.price_cents / 100).toFixed(2)}
                         </span>
                       </div>
                       <p className="font-sans text-[0.6rem] uppercase tracking-widest text-white/50 mb-auto">
@@ -151,7 +151,7 @@ export default function CartSidebar() {
                     Total
                   </span>
                   <span className="font-sans text-lg tracking-wider text-white">
-                    ${(total / 100).toFixed(2)}
+                    GH₵{(total / 100).toFixed(2)}
                   </span>
                 </div>
                 <Link
