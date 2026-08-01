@@ -174,14 +174,17 @@ export default function ProductImageCard({
         )}
       </div>
 
-      {/* Typography */}
-      <div className="product-card__details flex flex-col justify-between shrink-0 h-[88px] pt-3 pr-6 pb-6 pl-3 md:h-auto md:pt-4 md:pr-8 md:pb-8 md:pl-4 bg-[#FDFDFD]">
-        <h3 className="product-card__title font-sans font-semibold text-[0.7rem] md:text-[0.75rem] leading-[1.3] text-black tracking-widest min-h-[2.6em] line-clamp-2">
-          {title}
-        </h3>
-        <span className="product-card__price font-sans font-medium text-[0.65rem] md:text-[0.7rem] text-black/60">
-          {price}
-        </span>
+      {/* PRODUCT DETAILS (Title only, like Prada) */}
+      <div className="product-card__details flex flex-col justify-between w-full bg-white h-[70px] p-[16px_56px_32px_16px] transition-colors duration-500 ease-out z-[2]">
+        <div className="flex justify-between items-start w-full">
+          <h2 className="font-sans text-[16px] font-bold leading-[24px] text-[#121212] truncate w-full">
+            {title}
+          </h2>
+          {/* Price hidden to match Prada style */}
+          <span className="hidden">
+            {price}
+          </span>
+        </div>
       </div>
     </div>
   );

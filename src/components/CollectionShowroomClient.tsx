@@ -80,16 +80,16 @@ export default function CollectionShowroomClient({
     <main id="plp-showroom" className="plp-showroom relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen pt-[56px] md:pt-[70px] flex flex-col">
       {/* ENTIRE FILTER SECTION (STICKY) */}
       <div 
-        className={`w-full sticky z-[70] flex flex-col transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] bg-[#FDFDFD] ${
+        className={`w-full sticky z-[70] flex flex-col transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] bg-white ${
           isHeaderHidden ? "top-0" : "top-[56px] md:top-[70px]"
         }`}
       >
-        {/* SUBCATEGORY MENU (Title + Categories unified, like Prada) */}
-        <div id="subcategory_menu" className="plp-showroom__subcategory-menu subcategory w-full h-[96px] pt-5 px-5 lg:px-8 pb-0 flex flex-col justify-between">
-          <h1 className="font-sans text-[18px] md:text-[20px] font-bold text-[#121212] leading-none">Ready to wear</h1>
+        {/* SUBCATEGORY MENU (Title + Categories in a single row) */}
+        <div id="subcategory_menu" className="plp-showroom__subcategory-menu subcategory w-full h-[56px] px-[28px] border-b border-[#D9DCE0] flex items-center gap-8 bg-white">
+          <h1 className="font-sans text-[16px] font-bold text-[#121212] whitespace-nowrap">Ready to wear</h1>
           
           {/* Category List */}
-          <div className="w-full flex overflow-x-auto overflow-y-hidden scrollbar-hide gap-6 lg:gap-8 items-center">
+          <div className="w-full flex overflow-x-auto overflow-y-hidden scrollbar-hide gap-6 items-center h-full">
             {["View all", "Evening gowns", "Mini dresses", "Two-piece sets", "Jumpsuits", "Corsets & tops", "Accessories"].map(cat => {
                const normalizedCat = cat.toLowerCase() === "view all" ? "View All" : 
                                      cat.toLowerCase() === "evening gowns" ? "Evening Gowns" :
@@ -104,10 +104,10 @@ export default function CollectionShowroomClient({
                  <button
                     key={cat}
                     onClick={() => setActiveCategory(normalizedCat)}
-                    className={`shrink-0 font-sans text-[13px] md:text-[14px] transition-all pb-[10px] border-b-[2px] -mb-[2px] ${
+                    className={`shrink-0 font-sans text-[16px] h-full flex items-center border-b-[2px] transition-all ${
                        isActive
                        ? "text-[#121212] font-bold border-[#121212]"
-                       : "text-[#121212]/60 font-medium border-transparent hover:text-[#121212]"
+                       : "text-[#121212]/60 font-normal border-transparent hover:text-[#121212]"
                     }`}
                  >
                     {cat}
@@ -118,19 +118,19 @@ export default function CollectionShowroomClient({
         </div>
 
         {/* Utility / Filter Bar */}
-        <div className="plp-sortby w-full px-5 lg:px-8 h-[48px] flex justify-between items-center bg-[#FDFDFD] relative z-[2]">
+        <div className="plp-sortby w-full px-[28px] h-[48px] border-b border-[#D9DCE0] flex justify-between items-center bg-white relative z-[2]">
           {/* Left: Product Count */}
-          <span className="font-sans text-[11px] md:text-[12px] text-[#6b7280] font-medium uppercase tracking-wider">
+          <span className="font-sans text-[12px] text-[#6b7280] font-medium uppercase tracking-wider">
             {filteredProducts.length} PRODUCTS
           </span>
           
           {/* Right: Filters & Sort */}
           <div className="flex items-center gap-2">
-            <button className="font-sans text-[11px] md:text-[12px] text-[#121212] font-bold hover:opacity-70 transition-opacity uppercase">
+            <button className="font-sans text-[12px] text-[#121212] font-bold hover:opacity-70 transition-opacity uppercase">
               FILTERS
             </button>
-            <span className="font-sans text-[11px] md:text-[12px] text-[#121212] mx-1 font-bold">·</span>
-            <button className="font-sans text-[11px] md:text-[12px] text-[#121212] font-bold hover:opacity-70 transition-opacity flex items-center gap-1 uppercase">
+            <span className="font-sans text-[12px] text-[#121212] mx-1 font-bold">·</span>
+            <button className="font-sans text-[12px] text-[#121212] font-bold hover:opacity-70 transition-opacity flex items-center gap-1 uppercase">
               SORT BY
             </button>
           </div>
@@ -140,7 +140,7 @@ export default function CollectionShowroomClient({
       {/* THE SHOWROOM GRID */}
       <section className="w-full pb-24 mt-0">
         {/* Simple 4-column Grid */}
-        <div id="product_grid" className="plp-showroom__product-grid grid grid-cols-2 lg:grid-cols-4 gap-[1px] bg-black/10">
+        <div id="product_grid" className="plp-showroom__product-grid grid grid-cols-2 lg:grid-cols-4 gap-[1px] bg-[#D9DCE0]">
           {filteredProducts.map((item, index) => {
             return (
               <motion.div
@@ -160,7 +160,7 @@ export default function CollectionShowroomClient({
                     },
                   },
                 }}
-                className="w-full flex flex-col h-full bg-[#FDFDFD]"
+                className="w-full flex flex-col h-full bg-white"
               >
                 <TransitionLink
                   href={`/collection/${item.id}`}
@@ -174,7 +174,7 @@ export default function CollectionShowroomClient({
                     startWithWorn={false}
                     index={index}
                     priority={index < 4}
-                    aspectClass="aspect-[3/4] md:aspect-[2/3]"
+                    aspectClass="aspect-[4/5]"
                     className="flex-1"
                   />
                 </TransitionLink>
