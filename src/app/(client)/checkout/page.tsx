@@ -110,9 +110,9 @@ export default function CheckoutPage() {
 
       setIsSuccess(true);
       clearCart();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Unexpected error during submission:", err);
-      alert("An unexpected error occurred while processing your request. Please try again.");
+      alert(`Submission Error: ${err?.message || "An unexpected error occurred."} Please contact support if this persists.`);
     } finally {
       setIsSubmitting(false);
     }
