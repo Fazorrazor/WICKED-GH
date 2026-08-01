@@ -78,12 +78,12 @@ export default function GlobalHeader() {
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className={`global-header__wrapper fixed top-0 w-full flex flex-col z-[80] transition-colors duration-300 ${
         hasBackground
-          ? "bg-[#FDFDFD] border-b border-black/10"
+          ? "bg-[#FFFFFF] border-b border-[#D9DCE0]"
           : "bg-transparent"
       }`}
     >
       {/* Top Bar: Logo, Hamburger, Profile */}
-      <div id="new-header__container" className="global-header__container relative w-full h-[56px] md:h-[70px] px-4 md:px-6 flex justify-between items-center">
+      <div id="new-header__container" className="global-header__container relative w-full h-[72px] px-[28px] flex justify-between items-center">
         {/* Left Action */}
         {isCheckoutPage ? (
           <TransitionLink
