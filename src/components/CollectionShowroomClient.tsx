@@ -174,7 +174,7 @@ export default function CollectionShowroomClient({
                     startWithWorn={false}
                     index={index}
                     priority={index < 4}
-                    aspectClass="aspect-[4/5]"
+                    aspectClass="aspect-[3/4] md:aspect-[2/3]"
                     className="flex-1"
                   />
                 </TransitionLink>
