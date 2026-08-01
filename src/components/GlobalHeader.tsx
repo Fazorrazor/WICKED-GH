@@ -116,7 +116,7 @@ export default function GlobalHeader() {
         {/* Center Logo */}
         <motion.div className="global-header__logo absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center justify-center mt-1">
           <TransitionLink href="/" className="block">
-            <Image src="/logo-accent.png" alt="Wicked" width={160} height={40} priority className="h-8 md:h-10 w-auto object-contain transition-all duration-300" />
+            <Image src="/logo-accent.png" alt="Wicked" width={160} height={40} priority className="h-8 md:h-10 w-auto object-contain transition-all duration-300" style={{ width: 'auto', height: '100%' }} />
           </TransitionLink>
         </motion.div>
 

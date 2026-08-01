@@ -145,7 +145,7 @@ export default function CollectionShowroomClient({
             return (
               <motion.div
                 key={item.id}
-                initial="hidden"
+                initial={index < 4 ? "visible" : "hidden"}
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.1 }}
                 variants={{

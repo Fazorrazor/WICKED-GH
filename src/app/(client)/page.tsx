@@ -125,7 +125,7 @@ export default function Home() {
         <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
           
           <div className="flex flex-col gap-6 w-full md:w-1/3">
-            <Image src="/logo-accent.png" alt="Wicked" width={160} height={40} className="h-8 md:h-10 w-auto object-contain object-left opacity-90" />
+            <Image src="/logo-accent.png" alt="Wicked" width={160} height={40} className="h-8 md:h-10 w-auto object-contain object-left opacity-90" style={{ width: 'auto', height: '100%' }} />
             <p className="font-sans text-[13px] md:text-[14px] text-white/50 leading-relaxed max-w-sm">
               Premium tailoring and uncompromising design. Born in Accra, worn globally.
             </p>
