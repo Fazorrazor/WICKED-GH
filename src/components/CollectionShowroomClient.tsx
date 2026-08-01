@@ -85,11 +85,11 @@ export default function CollectionShowroomClient({
         }`}
       >
         {/* SUBCATEGORY MENU (Title + Categories unified, like Prada) */}
-        <div id="subcategory_menu" className="plp-showroom__subcategory-menu subcategory w-full h-[96px] pt-5 px-5 md:px-12 pb-0 flex flex-col justify-between">
+        <div id="subcategory_menu" className="plp-showroom__subcategory-menu subcategory w-full h-[96px] pt-5 px-5 lg:px-8 pb-0 flex flex-col justify-between">
           <h1 className="font-sans text-[18px] md:text-[20px] font-bold text-[#121212] leading-none">Ready to wear</h1>
           
           {/* Category List */}
-          <div className="w-full flex overflow-x-auto overflow-y-hidden scrollbar-hide gap-6 md:gap-8 items-center">
+          <div className="w-full flex overflow-x-auto overflow-y-hidden scrollbar-hide gap-6 lg:gap-8 items-center">
             {["View all", "Evening gowns", "Mini dresses", "Two-piece sets", "Jumpsuits", "Corsets & tops", "Accessories"].map(cat => {
                const normalizedCat = cat.toLowerCase() === "view all" ? "View All" : 
                                      cat.toLowerCase() === "evening gowns" ? "Evening Gowns" :
@@ -104,10 +104,10 @@ export default function CollectionShowroomClient({
                  <button
                     key={cat}
                     onClick={() => setActiveCategory(normalizedCat)}
-                    className={`shrink-0 font-sans text-[13px] md:text-[14px] transition-all pb-3 border-b-[2px] -mb-[1px] ${
+                    className={`shrink-0 font-sans text-[13px] md:text-[14px] transition-all pb-[10px] border-b-[2px] -mb-[2px] ${
                        isActive
                        ? "text-[#121212] font-bold border-[#121212]"
-                       : "text-[#121212]/50 font-semibold border-transparent hover:text-[#121212]"
+                       : "text-[#121212]/60 font-medium border-transparent hover:text-[#121212]"
                     }`}
                  >
                     {cat}
@@ -118,7 +118,7 @@ export default function CollectionShowroomClient({
         </div>
 
         {/* Utility / Filter Bar */}
-        <div className="plp-sortby w-full border-y border-black/10 px-5 md:px-12 h-[48px] flex justify-between items-center bg-[#FDFDFD]">
+        <div className="plp-sortby w-full px-5 lg:px-8 h-[48px] flex justify-between items-center bg-[#FDFDFD] relative z-[2]">
           {/* Left: Product Count */}
           <span className="font-sans text-[11px] md:text-[12px] text-[#6b7280] font-medium uppercase tracking-wider">
             {filteredProducts.length} PRODUCTS
