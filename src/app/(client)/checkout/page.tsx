@@ -5,7 +5,7 @@ import { useCartStore } from "@/lib/store";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { TransitionLink } from "@/components/TransitionProvider";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export default function CheckoutPage() {
@@ -22,6 +22,8 @@ export default function CheckoutPage() {
     (acc, item) => acc + item.price_cents * item.quantity,
     0,
   );
+
+  const supabase = createClient();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
