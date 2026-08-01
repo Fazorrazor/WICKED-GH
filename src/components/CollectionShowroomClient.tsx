@@ -104,10 +104,10 @@ export default function CollectionShowroomClient({
                  <button
                     key={cat}
                     onClick={() => setActiveCategory(normalizedCat)}
-                    className={`shrink-0 font-sans text-[16px] h-full flex items-center border-b-[2px] transition-all ${
+                    className={`shrink-0 font-sans text-[12px] h-full flex items-center border-b-[2px] transition-all ${
                        isActive
                        ? "text-[#121212] font-bold border-[#121212]"
-                       : "text-[#121212]/60 font-normal border-transparent hover:text-[#121212]"
+                       : "text-[#121212]/60 font-medium border-transparent hover:text-[#121212]"
                     }`}
                  >
                     {cat}

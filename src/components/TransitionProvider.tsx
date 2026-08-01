@@ -21,18 +21,21 @@ export const useTransition = () => {
 // Component to handle route events without opting the whole app into client-side rendering
 function TransitionEvents({ 
   setIsTransitioning, 
-  currentUrlRef 
+  currentUrlRef,
+  isNavigatingRef 
 }: { 
   setIsTransitioning: (v: boolean) => void;
   currentUrlRef: React.MutableRefObject<string>;
+  isNavigatingRef: React.MutableRefObject<boolean>;
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     setIsTransitioning(false);
+    isNavigatingRef.current = false;
     currentUrlRef.current = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "");
-  }, [pathname, searchParams, setIsTransitioning, currentUrlRef]);
+  }, [pathname, searchParams, setIsTransitioning, currentUrlRef, isNavigatingRef]);
 
   return null;
 }
@@ -46,10 +49,12 @@ export function TransitionProvider({
   const router = useRouter();
   const pathname = usePathname();
   const currentUrlRef = useRef(pathname);
+  const isNavigatingRef = useRef(false); // To prevent multiple concurrent navigations
 
   const navigate = (url: string) => {
-    if (currentUrlRef.current === url || url.startsWith(pathname + "#")) return;
+    if (currentUrlRef.current === url || url.startsWith(pathname + "#") || isNavigatingRef.current) return;
 
+    isNavigatingRef.current = true;
     // Trigger the mask animation to drop down
     setIsTransitioning(true);
 
@@ -59,6 +64,12 @@ export function TransitionProvider({
     setTimeout(() => {
       router.push(url);
     }, 800);
+
+    // Fallback safety timeout: force dismiss the loader after 10 seconds if navigation hangs
+    setTimeout(() => {
+      setIsTransitioning(false);
+      isNavigatingRef.current = false;
+    }, 10000);
   };
 
   return (
@@ -69,6 +80,7 @@ export function TransitionProvider({
         <TransitionEvents 
           setIsTransitioning={setIsTransitioning} 
           currentUrlRef={currentUrlRef} 
+          isNavigatingRef={isNavigatingRef}
         />
       </Suspense>
 
