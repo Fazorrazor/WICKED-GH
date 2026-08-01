@@ -21,7 +21,7 @@ export default async function ClientelePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const clientMap = new Map<string, any>();
 
-  inquiries?.forEach((inquiry) => {
+  inquiries?.forEach((inquiry: { email?: string; shipping_address?: string; created_at?: string; total_cents?: number }) => {
     if (!inquiry.email) return;
 
     if (clientMap.has(inquiry.email)) {

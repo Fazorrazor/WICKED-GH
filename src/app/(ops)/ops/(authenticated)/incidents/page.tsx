@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { createClient } from "@supabase/supabase-js";
 import {
   ShieldAlert,
@@ -12,10 +12,7 @@ import {
   Flame,
 } from "lucide-react";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-);
+// NOTE: Client created inside component to avoid build-time env var baking
 
 type Incident = {
   id: string;
@@ -27,6 +24,13 @@ type Incident = {
 };
 
 export default function IncidentsPage() {
+  const supabase = useMemo(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key) return null;
+    return createClient(url, key);
+  }, []);
+
   const [isDeclaring, setIsDeclaring] = useState(false);
   const [incidents, setIncidents] = useState<Incident[]>([]);
 
@@ -37,6 +41,8 @@ export default function IncidentsPage() {
   const [newDescription, setNewDescription] = useState("");
 
   useEffect(() => {
+    if (!supabase) return;
+
     const fetchIncidents = async () => {
       const { data } = await supabase
         .from("ops_incidents")
@@ -72,10 +78,10 @@ export default function IncidentsPage() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [supabase]);
 
   const handleDeclareIncident = async () => {
-    if (!newTitle) return;
+    if (!newTitle || !supabase) return;
 
     await supabase.from("ops_incidents").insert([
       {

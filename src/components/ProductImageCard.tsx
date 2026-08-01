@@ -95,12 +95,12 @@ export default function ProductImageCard({
   return (
     <div
       ref={containerRef}
-      className={`flex flex-col group cursor-pointer h-full bg-[#EBEBEB] ${className}`}
+      className={`product-card flex flex-col group cursor-pointer h-full bg-[#FDFDFD] ${className}`}
       onMouseEnter={() => !isMobile && setIsHovered(true)}
       onMouseLeave={() => !isMobile && setIsHovered(false)}
     >
       {/* Image Container with Static Background */}
-      <div className={`relative w-full overflow-hidden ${aspectClass} max-h-[55vh]`}>
+      <div className={`product-card__picture-container relative w-full overflow-hidden bg-[#F0F0F0] ${aspectClass}`}>
         <AnimatePresence initial={false}>
           {showWornImage ? (
             <motion.div
@@ -118,7 +118,7 @@ export default function ProductImageCard({
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 priority={priority}
-                className="object-cover object-center mix-blend-multiply"
+                className="product-card__picture product-card__picture--worn object-cover object-center mix-blend-multiply"
               />
             </motion.div>
           ) : (
@@ -159,19 +159,27 @@ export default function ProductImageCard({
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 priority={priority && !showWornImage}
-                className="object-cover object-center mix-blend-multiply"
+                className="product-card__picture product-card__picture--main object-cover object-center mix-blend-multiply"
               />
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Prada-style Dot Indicators for Mobile */}
+        {isMobile && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-[5px] z-10">
+            <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${!showWornImage ? "bg-[#121212]" : "bg-transparent border border-[#121212]"}`} />
+            <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${showWornImage ? "bg-[#121212]" : "bg-transparent border border-[#121212]"}`} />
+          </div>
+        )}
       </div>
 
       {/* Typography */}
-      <div className="flex flex-col shrink-0 px-3 py-4 md:px-5 md:py-6 bg-[#EBEBEB]">
-        <h3 className="font-sans font-semibold text-[0.65rem] md:text-[0.75rem] text-black uppercase tracking-widest mb-1 line-clamp-1">
+      <div className="product-card__details flex flex-col justify-between shrink-0 h-[88px] pt-3 pr-6 pb-6 pl-3 md:h-auto md:pt-4 md:pr-8 md:pb-8 md:pl-4 bg-[#FDFDFD]">
+        <h3 className="product-card__title font-sans font-semibold text-[0.7rem] md:text-[0.75rem] leading-[1.3] text-black tracking-widest min-h-[2.6em] line-clamp-2">
           {title}
         </h3>
-        <span className="font-sans font-medium text-[0.6rem] md:text-xs text-black/50">
+        <span className="product-card__price font-sans font-medium text-[0.65rem] md:text-[0.7rem] text-black/60">
           {price}
         </span>
       </div>

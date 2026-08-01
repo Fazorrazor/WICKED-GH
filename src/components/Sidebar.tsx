@@ -30,6 +30,17 @@ export default function Sidebar() {
     return () => window.removeEventListener("open-sidebar", handleOpenSidebar);
   }, []);
 
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isSidebarOpen]);
+
   return (
     <AnimatePresence>
       {isSidebarOpen && (
@@ -46,10 +57,9 @@ export default function Sidebar() {
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed top-0 left-0 w-full md:w-[400px] h-full bg-[#FAFAFA] border-r border-black/10 text-[#121212] z-[120] flex flex-col overflow-y-auto shadow-2xl"
+            className="main-sidebar fixed top-0 left-0 w-full md:w-[400px] h-full bg-[#FAFAFA] border-r border-black/10 text-[#121212] z-[120] flex flex-col overflow-y-auto shadow-2xl"
           >
-            <div className="w-full h-full flex flex-col px-8 md:px-12 py-12 md:py-20 relative">
+            <div className="main-sidebar__container w-full h-full flex flex-col px-8 md:px-12 py-12 md:py-20 relative">
               <button
                 onClick={() => setIsSidebarOpen(false)}
                 className="absolute top-8 right-8 md:top-10 md:right-10 text-[0.65rem] font-sans font-bold tracking-[0.2em] uppercase text-[#121212] hover:text-[#781625] transition-colors z-10"
@@ -57,7 +67,7 @@ export default function Sidebar() {
                 [ Close ]
               </button>
 
-              <div className="flex flex-col gap-12 mt-12 md:mt-8">
+              <div className="main-sidebar__menu flex flex-col gap-12 mt-12 md:mt-8">
                 <motion.div
                   variants={staggerContainer}
                   initial="hidden"

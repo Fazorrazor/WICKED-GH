@@ -43,10 +43,12 @@ async function _deleteCommissionAction(id: string) {
   }
 
   // Use service role to bypass RLS for administrative deletion
-  const adminSupabase = createAdminClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
-  );
+  const adminUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const adminKey = process.env.SUPABASE_SECRET_KEY;
+  if (!adminUrl || !adminKey) {
+    throw new Error("Missing Supabase admin credentials. Ensure SUPABASE_SECRET_KEY is set.");
+  }
+  const adminSupabase = createAdminClient(adminUrl, adminKey);
 
   const { error } = await adminSupabase.from("orders").delete().eq("id", id);
 
@@ -120,10 +122,12 @@ async function _generateAndEmailInvoiceAction(id: string) {
   }
 
   // Update Status
-  const adminSupabase = createAdminClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
-  );
+  const adminUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const adminKey = process.env.SUPABASE_SECRET_KEY;
+  if (!adminUrl || !adminKey) {
+    throw new Error("Missing Supabase admin credentials. Ensure SUPABASE_SECRET_KEY is set.");
+  }
+  const adminSupabase = createAdminClient(adminUrl, adminKey);
 
   await adminSupabase
     .from("orders")

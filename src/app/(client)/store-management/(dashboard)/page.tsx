@@ -17,12 +17,12 @@ export default async function AtelierDashboard() {
 
   const activeInquiries = inquiries || [];
   const totalPipeline = activeInquiries.reduce(
-    (sum, item) => sum + (item.total_cents || 0),
+    (sum: number, item: { total_cents?: number }) => sum + (item.total_cents || 0),
     0,
   );
   const avgOrderValue =
     activeInquiries.length > 0 ? totalPipeline / activeInquiries.length : 0;
-  const uniqueClients = new Set(activeInquiries.map((i) => i.email)).size;
+  const uniqueClients = new Set(activeInquiries.map((i: { email?: string }) => i.email)).size;
 
   return (
     <div className="flex flex-col animate-in fade-in duration-700 w-full min-h-screen bg-[#f4f0ee]">
@@ -94,7 +94,7 @@ export default async function AtelierDashboard() {
 
           {/* Table Rows */}
           <div className="flex flex-col divide-y divide-[#1a0a0e]/5">
-            {inquiries?.map((inquiry) => (
+            {inquiries?.map((inquiry: { id: string; email?: string; created_at?: string; shipping_address?: string; status?: string; total_cents?: number }) => (
               <div
                 key={inquiry.id}
                 className="grid grid-cols-6 px-12 py-6 items-center hover:bg-[#f9f7f6] transition-colors group"

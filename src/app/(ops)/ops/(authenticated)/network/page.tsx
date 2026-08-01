@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, react-hooks/set-state-in-effect */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { createClient } from "@supabase/supabase-js";
 import {
   Network,
@@ -12,13 +12,17 @@ import {
   WifiHigh,
 } from "lucide-react";
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-);
+// NOTE: Client is created inside the component (not at module level)
+// so env vars are read at runtime, not baked in at build time.
 
 export default function NetworkTracesPage() {
+  const supabase = useMemo(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key) return null;
+    return createClient(url, key);
+  }, []);
+
   const [requests, setRequests] = useState<any[]>([]);
   const [metrics, setMetrics] = useState({
     p99: 0,
@@ -51,6 +55,8 @@ export default function NetworkTracesPage() {
 
   // Fetch initial data and subscribe to live changes
   useEffect(() => {
+    if (!supabase) return;
+
     // 1. Fetch the last 50 traces for initial load
     const fetchInitialData = async () => {
       const { data } = await supabase
@@ -87,7 +93,7 @@ export default function NetworkTracesPage() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [supabase]);
 
   return (
     <div className="flex flex-col gap-8 w-full font-mono h-[85vh]">

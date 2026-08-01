@@ -27,10 +27,21 @@ export default async function proxy(request: NextRequest) {
     severity = "WARNING";
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
+  const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "").trim();
 
-  if (supabaseUrl && supabaseKey) {
+  // Validate URL is actually parseable before using it
+  let isValidSupabase = false;
+  try {
+    if (supabaseUrl && supabaseKey) {
+      new URL(supabaseUrl); // throws if invalid
+      isValidSupabase = true;
+    }
+  } catch {
+    // URL is malformed — skip telemetry silently
+  }
+
+  if (isValidSupabase) {
     const regionHeader = request.headers.get("x-vercel-id");
     const region = regionHeader
       ? regionHeader.split("::")[0].toUpperCase()
@@ -51,16 +62,20 @@ export default async function proxy(request: NextRequest) {
 
     // Helper to log immediately
     const logTrace = (customTrace: any) => {
-      fetch(`${supabaseUrl}/rest/v1/ops_network_traces`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify(customTrace),
-      }).catch(console.error);
+      try {
+        fetch(`${supabaseUrl}/rest/v1/ops_network_traces`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify(customTrace),
+        }).catch(console.error);
+      } catch {
+        // Silently fail — never crash middleware
+      }
     };
 
     // Active Defense: Upstash Redis IP Blocking

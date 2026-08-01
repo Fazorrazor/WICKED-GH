@@ -12,10 +12,11 @@ export async function GET(
 
   // Verify auth
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return new NextResponse("Unauthorized", { status: 401 });
+    data:{user},
+  }=await supabase.auth.getUser();
+  if(!user){
+    return new
+    NextResponse("Unauthorized",{status:401});
   }
 
   // Fetch inquiry

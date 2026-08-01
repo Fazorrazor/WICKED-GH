@@ -16,6 +16,17 @@ export default function CartSidebar() {
     setTimeout(() => setMounted(true), 0);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   if (!mounted) return null;
 
   const total = items.reduce(
@@ -42,10 +53,10 @@ export default function CartSidebar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 h-full w-full max-w-[450px] bg-[#FDFDFD] text-[#121212] z-[100] shadow-2xl flex flex-col border-l border-[#781625]/20"
+            className="cart-sidebar fixed top-0 right-0 h-full w-full max-w-[450px] bg-[#FDFDFD] text-[#121212] z-[100] shadow-2xl flex flex-col border-l border-[#781625]/20"
           >
             {/* Header */}
-            <div className="flex justify-between items-center p-6 border-b border-black/10">
+            <div className="cart-sidebar__header flex justify-between items-center p-6 border-b border-black/10">
               <h2 className="font-sans text-xs font-bold tracking-[0.2em] uppercase text-[#121212]">
                 Your Bag ({items.length})
               </h2>
@@ -58,7 +69,7 @@ export default function CartSidebar() {
             </div>
 
             {/* Items */}
-            <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-8">
+            <div className="cart-sidebar__items flex-1 overflow-y-auto p-6 flex flex-col gap-8">
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-[#121212]/40 font-sans text-xs uppercase tracking-widest gap-4">
                   <p>Your bag is empty.</p>
@@ -134,7 +145,7 @@ export default function CartSidebar() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="p-6 border-t border-black/10 bg-[#FAFAFA]">
+              <div className="cart-sidebar__footer p-6 border-t border-black/10 bg-[#FAFAFA]">
                 <div className="flex justify-between items-center mb-6">
                   <span className="font-sans text-xs font-bold tracking-widest uppercase text-[#121212]">
                     Total

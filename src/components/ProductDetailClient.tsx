@@ -75,10 +75,28 @@ export default function ProductDetailClient({
 
   const { addItem } = useCartStore();
 
+  const extraImages: Record<string, string[]> = {
+    "6ff4e61f-427b-4d72-8060-5f1ff7f12b22": ["/garments/burgundy_detail.png"],
+    "8f7e0606-bd47-4287-980f-944e1be0be8b": ["/garments/black_detail.png"],
+    "d2f8c163-d14d-4245-a633-89de64f4189a": ["/garments/turquoise_detail.png"],
+    "e80dfa33-8daa-4841-a78b-2ee84f9498ea": ["/garments/velvet_detail.png"],
+    "a1b0764d-b8e4-42cc-b7f6-f3fb5afcfc26": ["/garments/emerald_detail.png"],
+    "7274b7f3-d4a2-4a53-b41f-68c1063a8a52": ["/garments/crystal_detail.png"],
+    "8a1c641f-2ca1-4aef-a295-bb3c1d0ac809": ["/garments/jumpsuit_detail.png"],
+    "3b1093b1-ad44-45c7-8029-a2497bb3e1fd": ["/garments/ruby_detail.png"],
+    "efa8798d-c222-4b45-bed2-48b1d9724d96": ["/garments/onyx_detail.png"],
+  };
+
+  const images = [
+    product.image_worn_url || "/garments/placeholder_product_1.png",
+    ...(extraImages[product.id] || []),
+    product.image_solo_url || "/garments/placeholder_product_1.png",
+  ];
+
   const paginate = (newDirection: number) => {
     setDirection(newDirection);
     setActiveImageIndex(
-      (prev) => (prev + newDirection + 2) % 2, // We have 2 images: worn and solo
+      (prev) => (prev + newDirection + images.length) % images.length,
     );
   };
 
@@ -96,15 +114,12 @@ export default function ProductDetailClient({
     }),
   };
 
-  const images = [
-    product.image_worn_url || "/garments/placeholder_product_1.png",
-    product.image_solo_url || "/garments/placeholder_product_1.png",
-  ];
+  // Images array is now defined above to be used in paginate
 
   return (
-    <main className="relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen flex flex-col md:flex-row">
+    <main className="pdp-wrapper relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen pt-[56px] md:pt-[70px] flex flex-col md:flex-row">
       {/* LEFT: Shuffling Image Gallery */}
-      <div className="w-full md:w-[55%] aspect-[4/5] md:aspect-auto md:h-screen flex flex-col pt-20 md:pt-0 bg-[#0e0e0e] relative group overflow-hidden shrink-0 border-r border-[#781625]/20">
+      <div className="pdp-gallery w-full md:w-[55%] aspect-[4/5] md:aspect-auto md:h-[calc(100vh-70px)] flex flex-col bg-[#0e0e0e] relative group overflow-hidden shrink-0 border-r border-[#781625]/20">
         {/* Navigation Arrows */}
         <button
           onClick={() => paginate(-1)}
@@ -132,13 +147,26 @@ export default function ProductDetailClient({
               ease: [0.16, 1, 0.3, 1], // Classic hyper-smooth easing
               delay: 0.05,
             }}
-            className="absolute inset-0 w-full h-full pointer-events-none"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = Math.abs(offset.x) * velocity.x;
+
+              if (swipe < -10000) {
+                paginate(1);
+              } else if (swipe > 10000) {
+                paginate(-1);
+              }
+            }}
+            className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
           >
             <Image
               src={images[activeImageIndex]}
               alt={`${product.title} view ${activeImageIndex + 1}`}
               fill
               priority
+              sizes="(max-width: 768px) 100vw, 55vw"
               className="object-cover object-center"
             />
           </motion.div>
@@ -156,8 +184,8 @@ export default function ProductDetailClient({
       </div>
 
       {/* RIGHT: Sticky Product Details */}
-      <div className="w-full md:w-[45%] relative bg-[#FDFDFD]">
-        <div className="md:sticky md:top-0 w-full h-screen overflow-y-auto flex flex-col px-6 py-12 md:px-12 lg:px-20 pb-32 md:pb-0">
+      <div className="pdp-details w-full md:w-[45%] relative bg-[#FDFDFD]">
+        <div className="pdp-details__scroll-container md:sticky md:top-[70px] w-full md:h-[calc(100vh-70px)] overflow-y-auto flex flex-col px-6 py-12 md:px-12 lg:px-20 pb-32 md:pb-0">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -192,6 +220,7 @@ export default function ProductDetailClient({
                           src={selectedVariation.image}
                           alt={selectedVariation.name}
                           fill
+                          sizes="48px"
                           className="object-cover opacity-80"
                         />
                       )}

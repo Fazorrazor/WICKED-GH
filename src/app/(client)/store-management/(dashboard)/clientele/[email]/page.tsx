@@ -34,7 +34,7 @@ export default async function DossierPage({
     phone: addrParts[1] || "Unknown",
     location: addrParts[3] || addrParts[2] || "Unknown Location",
     total_spent: inquiries.reduce(
-      (sum, inq) => sum + (inq.total_cents || 0),
+      (sum: number, inq: any) => sum + (inq.total_cents || 0),
       0,
     ),
     commissions_count: inquiries.length,

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: "Wicked <inquiries@wicked.gh>",
+      from: "Wicked <onboarding@resend.dev>",
       to: [email],
       subject: "Order Confirmation - Wicked",
       html: `

@@ -19,6 +19,7 @@ export default function GlobalHeader() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [isLogoReady, setIsLogoReady] = useState(false);
 
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function GlobalHeader() {
     pathname.startsWith("/collection/") &&
     pathname.length > "/collection/".length;
   const needsDarkTheme = isScrolled || !isHomePage;
-  const hasBackground = isScrolled || isCollectionPage;
+  const hasBackground = isScrolled || isCollectionPage || isPDP;
 
   useEffect(() => {
     const isDev = process.env.NODE_ENV === "development";
@@ -48,10 +49,20 @@ export default function GlobalHeader() {
   }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    
     if (latest > 50) {
       setIsScrolled(true);
     } else {
       setIsScrolled(false);
+    }
+
+    if (previous !== undefined) {
+      if (latest > previous && latest > 150) {
+        setIsHidden(true);
+      } else if (latest < previous) {
+        setIsHidden(false);
+      }
     }
   });
 
@@ -59,29 +70,32 @@ export default function GlobalHeader() {
 
   return (
     <motion.nav
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isLogoReady ? 1 : 0 }}
+      initial={{ opacity: 0, y: 0 }}
+      animate={{ 
+        opacity: isLogoReady ? 1 : 0,
+        y: isHidden ? "-100%" : 0
+      }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 w-full flex flex-col z-[80] transition-colors duration-300 ${
+      className={`global-header__wrapper fixed top-0 w-full flex flex-col z-[80] transition-colors duration-300 ${
         hasBackground
-          ? "bg-[#781625] border-b-0"
+          ? "bg-[#FDFDFD] border-b border-black/10"
           : "bg-transparent"
       }`}
     >
       {/* Top Bar: Logo, Hamburger, Profile */}
-      <div className="relative w-full h-[55px] md:h-[70px] px-5 md:px-6 flex justify-between items-center">
+      <div id="new-header__container" className="global-header__container relative w-full h-[56px] md:h-[70px] px-4 md:px-6 flex justify-between items-center">
         {/* Left Action */}
         {isCheckoutPage ? (
           <TransitionLink
             href="/collection"
-            className={`font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity p-2 -ml-2 pointer-events-auto text-white`}
+            className={`font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity p-2 -ml-2 pointer-events-auto ${hasBackground ? 'text-[#121212]' : 'text-white'}`}
           >
             [ Back ]
           </TransitionLink>
         ) : isPDP ? (
           <TransitionLink
             href="/collection"
-            className={`font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity p-2 -ml-2 pointer-events-auto text-white`}
+            className={`font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity p-2 -ml-2 pointer-events-auto ${hasBackground ? 'text-[#121212]' : 'text-white'}`}
           >
             [ Back ]
           </TransitionLink>
@@ -91,29 +105,29 @@ export default function GlobalHeader() {
             className="flex flex-col gap-[6px] group p-2 -ml-2 pointer-events-auto"
           >
             <span
-              className={`w-6 h-[1px] transition-colors duration-300 group-hover:w-4 ${hasBackground ? 'bg-white' : (needsDarkTheme ? 'bg-[#121212]' : 'bg-white')}`}
+              className={`w-6 h-[1px] transition-colors duration-300 group-hover:w-4 ${hasBackground ? 'bg-[#121212]' : (needsDarkTheme ? 'bg-[#121212]' : 'bg-white')}`}
             ></span>
             <span
-              className={`w-6 h-[1px] transition-colors duration-300 group-hover:w-3 ${hasBackground ? 'bg-white' : (needsDarkTheme ? 'bg-[#121212]' : 'bg-white')}`}
+              className={`w-6 h-[1px] transition-colors duration-300 group-hover:w-3 ${hasBackground ? 'bg-[#121212]' : (needsDarkTheme ? 'bg-[#121212]' : 'bg-white')}`}
             ></span>
           </button>
         )}
 
         {/* Center Logo */}
-        <motion.div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center justify-center mt-1">
+        <motion.div className="global-header__logo absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center justify-center mt-1">
           <TransitionLink href="/" className="block">
-            <img src={hasBackground ? "/logo-white.png" : "/logo-accent.png"} alt="Wicked" className="h-8 md:h-10 w-auto object-contain transition-all duration-300" />
+            <Image src="/logo-accent.png" alt="Wicked" width={160} height={40} priority className="h-8 md:h-10 w-auto object-contain transition-all duration-300" />
           </TransitionLink>
         </motion.div>
 
         {/* Right Actions */}
-        <div className="flex gap-4 md:gap-6 items-center pointer-events-auto">
+        <div className="global-header__actions flex gap-4 md:gap-6 items-center pointer-events-auto">
           {!isCheckoutPage && (
             <>
               {/* Desktop Left Action */}
               {isPDP ? (
                 <button
-                  className={`hidden md:block font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity ${hasBackground ? 'text-white' : (needsDarkTheme ? 'text-[#121212]' : 'text-white')}`}
+                  className={`hidden md:block font-sans text-[0.65rem] font-medium tracking-[0.2em] uppercase hover:opacity-60 transition-opacity ${hasBackground ? 'text-[#121212]' : (needsDarkTheme ? 'text-[#121212]' : 'text-white')}`}
                 >
                   Share
                 </button>
@@ -122,7 +136,7 @@ export default function GlobalHeader() {
               {/* Unified Bag Button (Visible Everywhere except Checkout) */}
               <button
                 onClick={openCart}
-                className={`hover:opacity-70 transition-opacity flex items-center gap-1.5 ${hasBackground ? 'text-white' : (needsDarkTheme ? 'text-[#121212]' : 'text-white')}`}
+                className={`hover:opacity-70 transition-opacity flex items-center gap-1.5 ${hasBackground ? 'text-[#121212]' : (needsDarkTheme ? 'text-[#121212]' : 'text-white')}`}
                 aria-label="Open Bag"
               >
                 <svg

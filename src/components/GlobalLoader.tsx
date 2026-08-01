@@ -88,6 +88,7 @@ export default function GlobalLoader() {
                       alt="Wicked Archive"
                       fill
                       priority
+                      sizes="(max-width: 768px) 100vw, 300px"
                       className={`object-cover object-top transition-opacity duration-[50ms] ${
                         i === imgIndex ? "opacity-100" : "opacity-0"
                       }`}
@@ -109,7 +110,7 @@ export default function GlobalLoader() {
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="relative z-10 flex flex-col items-center"
               >
-                <img src="/logo-white.png" alt="Wicked" className="h-16 md:h-20 w-auto object-contain opacity-90" />
+                <Image src="/logo-accent.png" alt="Wicked" width={160} height={80} priority className="h-16 md:h-20 w-auto object-contain opacity-90" />
                 
                 {/* Cinematic loading accent line */}
                 <motion.div 

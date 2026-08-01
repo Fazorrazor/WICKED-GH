@@ -2,8 +2,8 @@ import { createBrowserClient } from "@supabase/ssr";
 import { Database } from "../database.types";
 
 export function createClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
+  const supabaseUrl = "https://yfiafaeqvlgmpqcodrin.supabase.co";
+  const supabaseKey = "sb_publishable_TTg3oxbRVOFSqEpNlNxkMA_MGTsVzlX";
 
   // simple validation to avoid throwing at build time
   const isValidUrl = supabaseUrl && /^https?:\/\//i.test(supabaseUrl);
