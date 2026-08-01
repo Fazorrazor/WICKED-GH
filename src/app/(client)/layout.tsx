@@ -9,6 +9,7 @@ import GlobalLoader from "@/components/GlobalLoader";
 import GlobalHeader from "@/components/GlobalHeader";
 import Sidebar from "@/components/Sidebar";
 import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/react";
 
 const sansFont = Inter({
   variable: "--font-inter", // keeping variable name for css compatibility
@@ -73,6 +74,7 @@ export default function RootLayout({
             style: { borderRadius: "0px" },
           }}
         />
+        <Analytics />
       </body>
     </html>
   );
