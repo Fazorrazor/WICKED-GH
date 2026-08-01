@@ -76,14 +76,14 @@ export default function GlobalHeader() {
         y: isHidden ? "-100%" : 0
       }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 w-full flex flex-col z-[80] transition-colors duration-300 ${
+      className={`global-header__wrapper fixed top-0 w-full flex flex-col z-[80] transition-colors duration-300 ${
         hasBackground
           ? "bg-[#FDFDFD] border-b border-black/10"
           : "bg-transparent"
       }`}
     >
       {/* Top Bar: Logo, Hamburger, Profile */}
-      <div className="relative w-full h-[55px] md:h-[70px] px-5 md:px-6 flex justify-between items-center">
+      <div id="new-header__container" className="global-header__container relative w-full h-[56px] md:h-[70px] px-4 md:px-6 flex justify-between items-center">
         {/* Left Action */}
         {isCheckoutPage ? (
           <TransitionLink
@@ -114,14 +114,14 @@ export default function GlobalHeader() {
         )}
 
         {/* Center Logo */}
-        <motion.div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center justify-center mt-1">
+        <motion.div className="global-header__logo absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center justify-center mt-1">
           <TransitionLink href="/" className="block">
             <Image src="/logo-accent.png" alt="Wicked" width={160} height={40} priority className="h-8 md:h-10 w-auto object-contain transition-all duration-300" />
           </TransitionLink>
         </motion.div>
 
         {/* Right Actions */}
-        <div className="flex gap-4 md:gap-6 items-center pointer-events-auto">
+        <div className="global-header__actions flex gap-4 md:gap-6 items-center pointer-events-auto">
           {!isCheckoutPage && (
             <>
               {/* Desktop Left Action */}

@@ -77,20 +77,13 @@ export default function CollectionShowroomClient({
   };
 
   return (
-    <main className="relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen pt-[55px] md:pt-[70px] flex flex-col">
-      {/* STATIC PAGE TITLE */}
-      <div className="w-full px-5 md:px-12 pt-6 pb-4 bg-[#FDFDFD]">
+    <main id="plp-showroom" className="plp-showroom relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen pt-[56px] md:pt-[70px] flex flex-col">
+      {/* SUBCATEGORY MENU (Title + Categories unified, like Prada) */}
+      <div id="subcategory_menu" className="plp-showroom__subcategory-menu subcategory w-full h-[96px] pt-5 px-5 md:px-12 pb-0 bg-[#FDFDFD] flex flex-col justify-between">
         <h1 className="font-sans text-[18px] md:text-[20px] font-bold text-[#121212] leading-none">Ready to wear</h1>
-      </div>
-
-      {/* PREMIUM CATEGORY NAV & UTILITY BAR (STICKY) */}
-      <div 
-        className={`w-full sticky z-[70] bg-[#FDFDFD] flex flex-col transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isHeaderHidden ? "top-0" : "top-[55px] md:top-[70px]"
-        }`}
-      >
-        {/* Top: Category List */}
-        <div className="w-full border-b border-black/10 px-5 md:px-12 flex overflow-x-auto overflow-y-hidden scrollbar-hide gap-6 md:gap-8 items-center">
+        
+        {/* Category List */}
+        <div className="w-full flex overflow-x-auto overflow-y-hidden scrollbar-hide gap-6 md:gap-8 items-center">
           {["View all", "Evening gowns", "Mini dresses", "Two-piece sets", "Jumpsuits", "Corsets & tops", "Accessories"].map(cat => {
              const normalizedCat = cat.toLowerCase() === "view all" ? "View All" : 
                                    cat.toLowerCase() === "evening gowns" ? "Evening Gowns" :
@@ -116,9 +109,16 @@ export default function CollectionShowroomClient({
              );
           })}
         </div>
-        
-        {/* Bottom: Utility / Filter Bar */}
-        <div className="w-full border-b border-black/10 px-5 md:px-12 py-3.5 flex justify-between items-center bg-[#FDFDFD]">
+      </div>
+
+      {/* PREMIUM UTILITY / FILTER BAR (STICKY) */}
+      <div 
+        className={`w-full sticky z-[70] flex flex-col transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isHeaderHidden ? "top-0" : "top-[56px] md:top-[70px]"
+        }`}
+      >
+        {/* Utility / Filter Bar */}
+        <div className="plp-sortby w-full border-y border-black/10 px-5 md:px-12 h-[48px] flex justify-between items-center bg-[#FDFDFD]">
           {/* Left: Product Count */}
           <span className="font-sans text-[11px] md:text-[12px] text-[#6b7280] font-medium uppercase tracking-wider">
             {filteredProducts.length} PRODUCTS
@@ -140,7 +140,7 @@ export default function CollectionShowroomClient({
       {/* THE SHOWROOM GRID */}
       <section className="w-full pb-24 mt-0">
         {/* Simple 4-column Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-[1px] bg-black/10">
+        <div id="product_grid" className="plp-showroom__product-grid grid grid-cols-2 lg:grid-cols-4 gap-[1px] bg-black/10">
           {filteredProducts.map((item, index) => {
             return (
               <motion.div
@@ -174,7 +174,7 @@ export default function CollectionShowroomClient({
                     startWithWorn={false}
                     index={index}
                     priority={index < 4}
-                    aspectClass="aspect-square md:aspect-[4/5]"
+                    aspectClass="aspect-[4/5]"
                     className="flex-1"
                   />
                 </TransitionLink>

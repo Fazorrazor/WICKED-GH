@@ -117,9 +117,9 @@ export default function ProductDetailClient({
   // Images array is now defined above to be used in paginate
 
   return (
-    <main className="relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen pt-[55px] md:pt-[70px] flex flex-col md:flex-row">
+    <main className="pdp-wrapper relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen pt-[56px] md:pt-[70px] flex flex-col md:flex-row">
       {/* LEFT: Shuffling Image Gallery */}
-      <div className="w-full md:w-[55%] aspect-[4/5] md:aspect-auto md:h-[calc(100vh-70px)] flex flex-col bg-[#0e0e0e] relative group overflow-hidden shrink-0 border-r border-[#781625]/20">
+      <div className="pdp-gallery w-full md:w-[55%] aspect-[4/5] md:aspect-auto md:h-[calc(100vh-70px)] flex flex-col bg-[#0e0e0e] relative group overflow-hidden shrink-0 border-r border-[#781625]/20">
         {/* Navigation Arrows */}
         <button
           onClick={() => paginate(-1)}
@@ -184,8 +184,8 @@ export default function ProductDetailClient({
       </div>
 
       {/* RIGHT: Sticky Product Details */}
-      <div className="w-full md:w-[45%] relative bg-[#FDFDFD]">
-        <div className="md:sticky md:top-[70px] w-full md:h-[calc(100vh-70px)] overflow-y-auto flex flex-col px-6 py-12 md:px-12 lg:px-20 pb-32 md:pb-0">
+      <div className="pdp-details w-full md:w-[45%] relative bg-[#FDFDFD]">
+        <div className="pdp-details__scroll-container md:sticky md:top-[70px] w-full md:h-[calc(100vh-70px)] overflow-y-auto flex flex-col px-6 py-12 md:px-12 lg:px-20 pb-32 md:pb-0">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
