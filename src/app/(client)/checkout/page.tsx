@@ -191,7 +191,7 @@ export default function CheckoutPage() {
                       {item.title}
                     </h3>
                     <span className="font-sans text-xs tracking-wider whitespace-nowrap">
-                      ${(item.price_cents / 100).toFixed(2)}
+                      GH₵{(item.price_cents / 100).toFixed(2)}
                     </span>
                   </div>
                   <p className="font-sans text-[0.65rem] uppercase tracking-widest text-[#121212]/60 mb-auto">
@@ -211,7 +211,7 @@ export default function CheckoutPage() {
                 Estimated Total
               </span>
               <span className="font-sans text-lg tracking-wider">
-                ${(total / 100).toFixed(2)}
+                GH₵{(total / 100).toFixed(2)}
               </span>
             </div>
             <p className="font-sans text-[0.65rem] text-[#121212]/60 mt-4 leading-relaxed">
