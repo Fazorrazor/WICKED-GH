@@ -24,7 +24,7 @@ export const InvoiceEmail = ({
   amountDue = 0,
 }: InvoiceEmailProps) => {
   const formattedAmount =
-    "$" +
+    "GH₵" +
     (amountDue / 100).toLocaleString(undefined, { minimumFractionDigits: 2 });
 
   return (

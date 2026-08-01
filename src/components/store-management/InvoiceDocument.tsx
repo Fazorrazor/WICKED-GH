@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
 export function InvoiceDocument({ inquiry }: { inquiry: any }) {
   const formatCurrency = (cents: number) => {
     return (
-      "$" +
+      "GH₵" +
       (cents / 100).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,

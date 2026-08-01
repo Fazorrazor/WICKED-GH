@@ -197,7 +197,7 @@ export default function ProductDetailClient({
               {product.title}
             </h1>
             <div className="font-sans text-sm tracking-widest mb-10 text-[#121212]/80">
-              ${(product.price_cents / 100).toFixed(2)}
+              GH₵{(product.price_cents / 100).toFixed(2)}
             </div>
 
             {/* Variation */}
