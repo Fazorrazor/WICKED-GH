@@ -1,7 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { createContext, useContext, useState, useEffect, useRef, Suspense } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -18,6 +18,25 @@ export const useTransition = () => {
   return context;
 };
 
+// Component to handle route events without opting the whole app into client-side rendering
+function TransitionEvents({ 
+  setIsTransitioning, 
+  currentUrlRef 
+}: { 
+  setIsTransitioning: (v: boolean) => void;
+  currentUrlRef: React.MutableRefObject<string>;
+}) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setIsTransitioning(false);
+    currentUrlRef.current = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : "");
+  }, [pathname, searchParams, setIsTransitioning, currentUrlRef]);
+
+  return null;
+}
+
 export function TransitionProvider({
   children,
 }: {
@@ -25,27 +44,33 @@ export function TransitionProvider({
 }) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const currentUrlRef = useRef(pathname);
 
   const navigate = (url: string) => {
-    if (window.location.pathname === url) return;
+    if (currentUrlRef.current === url || url.startsWith(pathname + "#")) return;
 
     // Trigger the mask animation to drop down
     setIsTransitioning(true);
 
-    // Wait for the curtain to drop (800ms) before physically pushing the route
+    // Wait for the curtain to drop (800ms) before physically pushing the route.
+    // The curtain will stay down while router.push blocks for server data, 
+    // and will only lift when the useEffect above fires.
     setTimeout(() => {
       router.push(url);
-
-      // Wait a moment for the new page to mount in the background, then lift curtain
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 600);
     }, 800);
   };
 
   return (
     <TransitionContext.Provider value={{ navigate }}>
       {children}
+      
+      <Suspense fallback={null}>
+        <TransitionEvents 
+          setIsTransitioning={setIsTransitioning} 
+          currentUrlRef={currentUrlRef} 
+        />
+      </Suspense>
 
       {/* KINETIC NAVIGATION MASK */}
       <AnimatePresence>
@@ -56,7 +81,7 @@ export function TransitionProvider({
             animate={{ x: 0 }}
             exit={{ x: "100%" }} // Wipe to right
             transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-[90] flex items-center justify-center bg-[#FDFDFD] border-r-4 border-[#781625]/80"
+            className="fixed inset-0 z-[90] flex items-center justify-center bg-[#0a0a0a] border-r-4 border-[#781625]/80"
           >
             <div className="flex overflow-hidden relative pb-10">
               {/* Text Logo for Transition */}
@@ -66,7 +91,7 @@ export function TransitionProvider({
                 transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
                 className="flex items-center justify-center"
               >
-                <img src="/logo.png" alt="Wicked" className="h-12 md:h-16 w-auto object-contain" />
+                <img src="/logo-accent.png" alt="Wicked" className="h-12 md:h-16 w-auto object-contain" />
               </motion.div>
             </div>
           </motion.div>
