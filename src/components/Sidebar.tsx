@@ -103,16 +103,7 @@ export default function Sidebar() {
                     </div>
                   </motion.div>
 
-                  {/* Secondary Link */}
-                  <motion.div variants={fadeUpVariant} className="group">
-                    <TransitionLink
-                      onClick={() => setIsSidebarOpen(false)}
-                      href="/store-management"
-                      className="font-display font-light text-3xl uppercase tracking-widest text-white hover:text-[#781625] transition-colors block"
-                    >
-                      Store Login
-                    </TransitionLink>
-                  </motion.div>
+                  {/* Store Login Removed for Public Preview */}
                   
                   {/* Tertiary Links */}
                   <motion.div variants={fadeUpVariant} className="pt-8 mt-2 border-t border-white/10 flex flex-col gap-4">
