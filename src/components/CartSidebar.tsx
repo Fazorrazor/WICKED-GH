@@ -53,16 +53,16 @@ export default function CartSidebar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="cart-sidebar fixed top-0 right-0 h-full w-full max-w-[450px] bg-[#FDFDFD] text-[#121212] z-[100] shadow-2xl flex flex-col border-l border-[#781625]/20"
+            className="cart-sidebar fixed top-0 right-0 h-full w-full max-w-[450px] bg-[#0a0a0a] text-white z-[100] shadow-2xl flex flex-col border-l border-white/10"
           >
             {/* Header */}
-            <div className="cart-sidebar__header flex justify-between items-center p-6 border-b border-black/10">
-              <h2 className="font-sans text-xs font-bold tracking-[0.2em] uppercase text-[#121212]">
+            <div className="cart-sidebar__header flex justify-between items-center p-6 border-b border-white/10">
+              <h2 className="font-sans text-xs font-bold tracking-[0.2em] uppercase text-white">
                 Your Bag ({items.length})
               </h2>
               <button
                 onClick={closeCart}
-                className="text-[#121212]/60 hover:text-[#121212] transition-colors"
+                className="text-white/60 hover:text-white transition-colors"
               >
                 <span className="text-xl font-light">×</span>
               </button>
@@ -71,12 +71,12 @@ export default function CartSidebar() {
             {/* Items */}
             <div className="cart-sidebar__items flex-1 overflow-y-auto p-6 flex flex-col gap-8">
               {items.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-[#121212]/40 font-sans text-xs uppercase tracking-widest gap-4">
+                <div className="h-full flex flex-col items-center justify-center text-white/40 font-sans text-xs uppercase tracking-widest gap-4">
                   <p>Your bag is empty.</p>
                   <TransitionLink
                     href="/collection"
                     onClick={closeCart}
-                    className="text-[#121212] border-b border-black/50 pb-1 hover:text-[#781625] hover:border-[#781625] transition-colors"
+                    className="text-white border-b border-white/50 pb-1 hover:text-[#781625] hover:border-[#781625] transition-colors"
                   >
                     Continue Shopping
                   </TransitionLink>
@@ -84,7 +84,7 @@ export default function CartSidebar() {
               ) : (
                 items.map((item) => (
                   <div key={item.id} className="flex gap-4">
-                    <div className="relative w-24 h-32 bg-[#FAFAFA] shrink-0 border border-black/5">
+                    <div className="relative w-24 h-32 bg-[#050505] shrink-0 border border-white/5">
                       <Image
                         src={item.image}
                         alt={item.title}
@@ -101,12 +101,12 @@ export default function CartSidebar() {
                           ${(item.price_cents / 100).toFixed(2)}
                         </span>
                       </div>
-                      <p className="font-sans text-[0.6rem] uppercase tracking-widest text-[#121212]/50 mb-auto">
+                      <p className="font-sans text-[0.6rem] uppercase tracking-widest text-white/50 mb-auto">
                         Var: {item.variationName}
                       </p>
 
                       <div className="flex justify-between items-center mt-4">
-                        <div className="flex items-center border border-black/10">
+                        <div className="flex items-center border border-white/10">
                           <button
                             onClick={() =>
                               updateQuantity(
@@ -114,25 +114,25 @@ export default function CartSidebar() {
                                 Math.max(1, item.quantity - 1),
                               )
                             }
-                            className="w-8 h-8 flex items-center justify-center hover:bg-black/5 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center hover:bg-white/10 transition-colors"
                           >
                             -
                           </button>
-                          <span className="w-8 h-8 flex items-center justify-center font-sans text-xs text-[#121212]">
+                          <span className="w-8 h-8 flex items-center justify-center font-sans text-xs text-white">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() =>
                               updateQuantity(item.id, item.quantity + 1)
                             }
-                            className="w-8 h-8 flex items-center justify-center hover:bg-black/5 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center hover:bg-white/10 transition-colors"
                           >
                             +
                           </button>
                         </div>
                         <button
                           onClick={() => removeItem(item.id)}
-                          className="font-sans text-[0.6rem] uppercase tracking-widest text-[#121212]/40 hover:text-[#781625] transition-colors border-b border-transparent hover:border-[#781625] pb-0.5"
+                          className="font-sans text-[0.6rem] uppercase tracking-widest text-white/40 hover:text-[#781625] transition-colors border-b border-transparent hover:border-[#781625] pb-0.5"
                         >
                           Remove
                         </button>
@@ -145,19 +145,19 @@ export default function CartSidebar() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="cart-sidebar__footer p-6 border-t border-black/10 bg-[#FAFAFA]">
+              <div className="cart-sidebar__footer p-6 border-t border-white/10 bg-[#050505]">
                 <div className="flex justify-between items-center mb-6">
-                  <span className="font-sans text-xs font-bold tracking-widest uppercase text-[#121212]">
+                  <span className="font-sans text-xs font-bold tracking-widest uppercase text-white">
                     Total
                   </span>
-                  <span className="font-sans text-lg tracking-wider text-[#121212]">
+                  <span className="font-sans text-lg tracking-wider text-white">
                     ${(total / 100).toFixed(2)}
                   </span>
                 </div>
                 <Link
                   href="/checkout"
                   onClick={closeCart}
-                  className="w-full bg-[#121212] text-white px-8 py-4 flex justify-center font-sans text-[0.7rem] font-bold tracking-[0.2em] uppercase hover:bg-[#781625] transition-colors active:scale-[0.98]"
+                  className="w-full bg-white text-[#050505] px-8 py-4 flex justify-center font-sans text-[0.7rem] font-bold tracking-[0.2em] uppercase hover:bg-white/80 transition-colors active:scale-[0.98]"
                 >
                   Proceed to Checkout
                 </Link>
