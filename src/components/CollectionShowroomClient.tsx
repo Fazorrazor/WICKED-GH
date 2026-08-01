@@ -78,45 +78,45 @@ export default function CollectionShowroomClient({
 
   return (
     <main id="plp-showroom" className="plp-showroom relative w-full bg-[#FDFDFD] text-[#121212] min-h-screen pt-[56px] md:pt-[70px] flex flex-col">
-      {/* SUBCATEGORY MENU (Title + Categories unified, like Prada) */}
-      <div id="subcategory_menu" className="plp-showroom__subcategory-menu subcategory w-full h-[96px] pt-5 px-5 md:px-12 pb-0 bg-[#FDFDFD] flex flex-col justify-between">
-        <h1 className="font-sans text-[18px] md:text-[20px] font-bold text-[#121212] leading-none">Ready to wear</h1>
-        
-        {/* Category List */}
-        <div className="w-full flex overflow-x-auto overflow-y-hidden scrollbar-hide gap-6 md:gap-8 items-center">
-          {["View all", "Evening gowns", "Mini dresses", "Two-piece sets", "Jumpsuits", "Corsets & tops", "Accessories"].map(cat => {
-             const normalizedCat = cat.toLowerCase() === "view all" ? "View All" : 
-                                   cat.toLowerCase() === "evening gowns" ? "Evening Gowns" :
-                                   cat.toLowerCase() === "mini dresses" ? "Mini Dresses" :
-                                   cat.toLowerCase() === "two-piece sets" ? "Two-Piece Sets" :
-                                   cat.toLowerCase() === "jumpsuits" ? "Jumpsuits" :
-                                   cat.toLowerCase() === "corsets & tops" ? "Corsets & Tops" : "Accessories";
-                                   
-             const isActive = activeCategory === normalizedCat || (!activeCategory && normalizedCat === "View All");
-             
-             return (
-               <button
-                  key={cat}
-                  onClick={() => setActiveCategory(normalizedCat)}
-                  className={`shrink-0 font-sans text-[13px] md:text-[14px] transition-all pb-3 border-b-[2px] -mb-[1px] ${
-                     isActive
-                     ? "text-[#121212] font-bold border-[#121212]"
-                     : "text-[#121212]/50 font-semibold border-transparent hover:text-[#121212]"
-                  }`}
-               >
-                  {cat}
-               </button>
-             );
-          })}
-        </div>
-      </div>
-
-      {/* PREMIUM UTILITY / FILTER BAR (STICKY) */}
+      {/* ENTIRE FILTER SECTION (STICKY) */}
       <div 
-        className={`w-full sticky z-[70] flex flex-col transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`w-full sticky z-[70] flex flex-col transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] bg-[#FDFDFD] ${
           isHeaderHidden ? "top-0" : "top-[56px] md:top-[70px]"
         }`}
       >
+        {/* SUBCATEGORY MENU (Title + Categories unified, like Prada) */}
+        <div id="subcategory_menu" className="plp-showroom__subcategory-menu subcategory w-full h-[96px] pt-5 px-5 md:px-12 pb-0 flex flex-col justify-between">
+          <h1 className="font-sans text-[18px] md:text-[20px] font-bold text-[#121212] leading-none">Ready to wear</h1>
+          
+          {/* Category List */}
+          <div className="w-full flex overflow-x-auto overflow-y-hidden scrollbar-hide gap-6 md:gap-8 items-center">
+            {["View all", "Evening gowns", "Mini dresses", "Two-piece sets", "Jumpsuits", "Corsets & tops", "Accessories"].map(cat => {
+               const normalizedCat = cat.toLowerCase() === "view all" ? "View All" : 
+                                     cat.toLowerCase() === "evening gowns" ? "Evening Gowns" :
+                                     cat.toLowerCase() === "mini dresses" ? "Mini Dresses" :
+                                     cat.toLowerCase() === "two-piece sets" ? "Two-Piece Sets" :
+                                     cat.toLowerCase() === "jumpsuits" ? "Jumpsuits" :
+                                     cat.toLowerCase() === "corsets & tops" ? "Corsets & Tops" : "Accessories";
+                                     
+               const isActive = activeCategory === normalizedCat || (!activeCategory && normalizedCat === "View All");
+               
+               return (
+                 <button
+                    key={cat}
+                    onClick={() => setActiveCategory(normalizedCat)}
+                    className={`shrink-0 font-sans text-[13px] md:text-[14px] transition-all pb-3 border-b-[2px] -mb-[1px] ${
+                       isActive
+                       ? "text-[#121212] font-bold border-[#121212]"
+                       : "text-[#121212]/50 font-semibold border-transparent hover:text-[#121212]"
+                    }`}
+                 >
+                    {cat}
+                 </button>
+               );
+            })}
+          </div>
+        </div>
+
         {/* Utility / Filter Bar */}
         <div className="plp-sortby w-full border-y border-black/10 px-5 md:px-12 h-[48px] flex justify-between items-center bg-[#FDFDFD]">
           {/* Left: Product Count */}
